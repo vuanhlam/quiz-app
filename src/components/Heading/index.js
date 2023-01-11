@@ -2,7 +2,6 @@
 
 import styles from './Heading.module.css'
 
-console.log(styles);
 
 function Heading() {
   return (
