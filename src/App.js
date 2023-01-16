@@ -1,12 +1,9 @@
-import { Heading, Paragraph, Button } from '~/components';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
     return (
-        <div style={{ padding: '10px 32px' }}>
-            <Button />
-            <Button secondery/>
-            <Button success/>
-            <Button warning/>
+        <div className="app-container">
+            hello 
         </div>
     );
 }
