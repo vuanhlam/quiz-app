@@ -4,12 +4,26 @@ import App from '~/App';
 import reportWebVitals from './reportWebVitals';
 import GlobalStyle from '~/components/GlobalStyles';
 
+import { BrowserRouter as Routers, Routes, Route } from 'react-router-dom';
+import User from './components/User/User';
+import Admin from './components/Admin/Admin';
+import Home from './components/Home/Home';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   // <React.StrictMode>
   <GlobalStyle>
-    <App />
-  </GlobalStyle>
+    <Routers>
+      <Routes>
+        <Route path="/" element={<App />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/users" element={<User />} />
+          <Route path="/admins" element={<Admin />} />
+        {/* </Route> */}
+      </Routes>
+      {/* <App /> */}
+    </Routers>
+  </GlobalStyle>,
   // </React.StrictMode>
 );
 
