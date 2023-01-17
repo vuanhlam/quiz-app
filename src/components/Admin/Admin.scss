@@ -1,0 +1,19 @@
+// admin Dashboard
+.admin-container {
+    display: flex;
+
+    .amdin-sidebar {
+        bottom: 0;
+
+        .pro-sidebar  {
+            height: 100vh;
+        }
+    }
+
+    .admin-content {
+        .control-btn-sidebar {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+    }
+}
