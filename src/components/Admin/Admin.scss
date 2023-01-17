@@ -15,6 +15,16 @@
     }
 
     .admin-content {
+        flex-grow: 1;
+        height: 100vw;
+        width: 1500px;
+        margin: 0 auto;
+
+        .amdin-header {
+            height: 60px;
+            box-shadow: 0px 1px 1px rgb(0 0 0 / 12%);
+        }
+
         .control-btn-sidebar {
             margin-left: 10px;
             cursor: pointer;

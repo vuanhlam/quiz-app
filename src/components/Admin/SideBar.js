@@ -1,10 +1,9 @@
 import 'react-pro-sidebar/dist/css/styles.css';
-import { FaTachometerAlt, FaGem, FaList, FaGithub, FaRegLaughWink, FaHeart } from 'react-icons/fa';
 import { ProSidebar, Menu, MenuItem, SubMenu, SidebarHeader, SidebarFooter, SidebarContent } from 'react-pro-sidebar';
-import { SiReactivex } from 'react-icons/si'
-import { RiDashboard3Fill } from 'react-icons/ri'
-import { MdOutlineFeaturedPlayList } from 'react-icons/md'
-import { BsFillBarChartFill } from 'react-icons/bs'
+import { SiReactivex } from 'react-icons/si';
+import { RiDashboard3Fill } from 'react-icons/ri';
+import { MdOutlineFeaturedPlayList } from 'react-icons/md';
+import { BsFillBarChartFill } from 'react-icons/bs';
 
 import { Link } from 'react-router-dom';
 
@@ -33,18 +32,17 @@ const SideBar = (props) => {
                         whiteSpace: 'nowrap',
                     }}
                 >
-                    <SiReactivex size={'3em'} color={"00bfff"}/>
-                    <span className='title'>Quizlet Dashboard</span>
+                    <SiReactivex size={'3em'} color={'00bfff'} />
+                    <span className="title">Quizlet Dashboard</span>
                 </div>
             </SidebarHeader>
 
             <SidebarContent>
                 <Menu iconShape="circle">
-                    <MenuItem 
-                        icon={<RiDashboard3Fill />}
-                        suffix={<span className="badge red">New</span>}>
+                    <MenuItem icon={<RiDashboard3Fill />} suffix={<span className="badge red">New</span>}>
                         {/* {intl.formatMessage({ id: 'dashboard' })} */}
                         Dashboard
+                        <Link to="/admins"/>
                     </MenuItem>
                 </Menu>
                 <Menu iconShape="circle">
@@ -54,9 +52,18 @@ const SideBar = (props) => {
                         icon={<MdOutlineFeaturedPlayList />}
                         title="Features"
                     >
-                        <MenuItem>User Management</MenuItem>
-                        <MenuItem>Quiz Management</MenuItem>
-                        <MenuItem>Question Management</MenuItem>
+                        <MenuItem >
+                            User Management
+                            <Link to="/admins/manage-users"/>
+                        </MenuItem>
+                        <MenuItem>
+                            Quiz Management
+                            <Link to="/admins/manage-quizes"/>
+                        </MenuItem>
+                        <MenuItem>
+                            Question Management
+                            <Link to="/admins/manage-questions"/>
+                        </MenuItem>
                     </SubMenu>
                     {/* <SubMenu
                         prefix={<span className="badge gray">3</span>}
@@ -90,10 +97,7 @@ const SideBar = (props) => {
                         padding: '20px 24px',
                     }}
                 >
-                    <div
-                        className="sidebar-btn"
-                        rel="noopener noreferrer"
-                    >
+                    <div className="sidebar-btn" rel="noopener noreferrer">
                         <BsFillBarChartFill />
                     </div>
                 </div>
