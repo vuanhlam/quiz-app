@@ -4,6 +4,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import images from '~/assets/images';
 import { NavLink, Link } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
 
 console.log(images.logo);
 
@@ -32,13 +33,18 @@ function Header() {
             <Nav.Link href="#link">Admin</Nav.Link> */}
           </Nav>
 
+          
           <Nav>
-            <NavDropdown title="Settings" id="basic-nav-dropdown">
+            {/* <button>Log In</button> */}
+            <Button variant="outline-primary">Log In</Button>
+            <Button className='signUp-btn' variant="primary">Sign Up</Button>
+            {/* <button>Sign Up</button> */}
+            {/* <NavDropdown title="Settings" id="basic-nav-dropdown">
               <NavDropdown.Item >Log In</NavDropdown.Item>
               <NavDropdown.Item >Log Out</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item >Profile</NavDropdown.Item>
-            </NavDropdown>
+            </NavDropdown> */}
           </Nav>
 
         </Navbar.Collapse>
