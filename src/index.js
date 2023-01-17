@@ -15,11 +15,11 @@ root.render(
   <GlobalStyle>
     <Routers>
       <Routes>
-        <Route path="/" element={<App />} />
-          <Route path="/home" element={<Home />} />
+        <Route path="/" element={<App />} >
+          <Route index element={<Home />} />
           <Route path="/users" element={<User />} />
           <Route path="/admins" element={<Admin />} />
-        {/* </Route> */}
+        </Route>
       </Routes>
       {/* <App /> */}
     </Routers>

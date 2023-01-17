@@ -3,7 +3,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import images from '~/assets/images';
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 
 console.log(images.logo);
 
@@ -11,7 +11,7 @@ function Header() {
   return (
     <Navbar bg="light" expand="lg">
       <Container>
-        <Navbar.Brand href="#home">
+        <Link to="/">
           <img
             src={images.logo}
             height="30"
@@ -19,14 +19,14 @@ function Header() {
             className='logo-icon'
           />
           
-        </Navbar.Brand>
+        </Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
 
           <Nav className="me-auto">
-            <Link className='nav-link' to="/">Home</Link>
-            <Link className='nav-link' to="/users">Users</Link>
-            <Link className='nav-link' to="/admins">Admin</Link>
+            <NavLink className='nav-link' to="/">Home</NavLink>
+            <NavLink className='nav-link' to="/users">Users</NavLink>
+            <NavLink className='nav-link' to="/admins">Admin</NavLink>
             {/* <Nav.Link href="#home">Home</Nav.Link>
             <Nav.Link href="#link">Users</Nav.Link>
             <Nav.Link href="#link">Admin</Nav.Link> */}
@@ -34,10 +34,10 @@ function Header() {
 
           <Nav>
             <NavDropdown title="Settings" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Log In</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">Log Out</NavDropdown.Item>
+              <NavDropdown.Item >Log In</NavDropdown.Item>
+              <NavDropdown.Item >Log Out</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">Profile</NavDropdown.Item>
+              <NavDropdown.Item >Profile</NavDropdown.Item>
             </NavDropdown>
           </Nav>
 
