@@ -1,19 +1,33 @@
-import Button from 'react-bootstrap/Button';
-
-import ModalCreateUser from "./ModalCreateUser";
 import '~/components/Admin/AdminContent/ManageUser.scss'
+import ModalCreateUser from "./ModalCreateUser";
+
+import { useState } from 'react';
+import { IoMdPersonAdd } from 'react-icons/io'
 
 function ManageUser() {
+
+    const [show, setShow] = useState(false);
+
     return (
         <div className="manage-users-container">
             <h1 className="title">Manage User</h1>
             <div className="users-content">
-                <div>
-                    {/* <Button variant="primary">Add New User</Button> */}
+                <div className='btn-add-new-user'>
+                    <button 
+                        className="btn btn-primary"
+                        onClick={() => setShow(true)}
+                    >
+                        <IoMdPersonAdd className='iconMarginLeft'/>
+                        <span>Add New User</span>
+                    </button>
                 </div>
-                <div>
+                <div className='table-user'>
+
                 </div>
-                <ModalCreateUser />
+                <ModalCreateUser 
+                    show={show}
+                    setShow={setShow}
+                />
             </div>
         </div>
     );

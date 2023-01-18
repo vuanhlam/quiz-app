@@ -1,4 +1,3 @@
-
 * {
     box-sizing: border-box;
     padding: 0;
@@ -7,6 +6,7 @@
 
 :root {
     --primary-color: #4255ff;
+    --btn-color: #1976d2;
 }
 
 .navbar-brand {
@@ -14,13 +14,12 @@
     max-width: 90px;
 }
 
-
 .navbar-nav {
     .nav-link {
         &.active {
-            color: var(--primary-color)
+            color: var(--primary-color);
         }
-    } 
+    }
 }
 
 .header-container .navbar {
@@ -40,18 +39,15 @@
 }
 
 .homepage-container {
-
     .homepage-video {
         position: absolute;
         top: -55px;
     }
 
-    .homepage-video ,
+    .homepage-video,
     .nav-bar {
         width: 100%;
     }
-
-    
 }
 
 .homepage-content {
@@ -75,7 +71,7 @@
         opacity: 0.8;
         font-weight: 300;
     }
-    
+
     .condition {
         margin-top: 24px;
     }
@@ -89,3 +85,17 @@
     margin-left: 16px;
 }
 
+.btn.btn-primary {
+    background-color: var(--btn-color);
+    display: flex;
+    align-items: center;
+}
+
+.btn:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.iconMarginLeft {
+    margin-right: 10px;
+}

@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import sidebarBg from '~/assets/images/bg2.jpg';
 
 const SideBar = (props) => {
-    const { image, collapsed, toggled, handleToggleSidebar } = props;
+    const { collapsed, toggled, handleToggleSidebar } = props;
     return (
         <ProSidebar
             image={sidebarBg}
