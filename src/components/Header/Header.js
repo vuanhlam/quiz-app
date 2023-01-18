@@ -6,8 +6,6 @@ import images from '~/assets/images';
 import { NavLink, Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 
-console.log(images.logo);
-
 function Header() {
   return (
     <Navbar bg="light" expand="lg">
