@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { BiUpload } from 'react-icons/bi';
-import axios from 'axios'
+import axios from 'axios';
+import { toast } from 'react-toastify';
+
+
 
 function ModalCreateUser(props) {
     const { show, setShow } = props;
@@ -15,28 +18,37 @@ function ModalCreateUser(props) {
     const [avatar, setAvatar] = useState();
 
     const handleClose = () => {
-        setShow(false)
-        setEmail('')
-        setPassword('')
-        setUserName('')
-        setRole('')
-        setAvatar('')
+        setShow(false);
+        setEmail('');
+        setPassword('');
+        setUserName('');
+        setRole('');
+        setAvatar('');
     };
-    // const handleShow = () => setShow(true);
+
+    const validateEmail = (email) => {
+        return String(email)
+            .toLowerCase()
+            .match(
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            );
+    };
 
     const handleSubmitCreateUser = async () => {
         // validate
+        const isValidEmail = validateEmail(email);
+        if(!isValidEmail) {
+            toast.error('Invalid Email');
+            return;
+        }
 
-        // call api
-        // const user = {
-        //     email: email,
-        //     password: password,
-        //     username: userName,
-        //     role: role,
-        //     userImage: avatar.preview,
-        // };
-
-        const FormData = require('form-data');
+        if(!password) {
+            toast.error('Invalid password');
+            return;
+        }
+        
+        // if you don't have field file to send, just use object to send to the server
+        // if have file must use form data support send file to server
 
         const data = new FormData();
         data.append('email', email);
@@ -46,7 +58,17 @@ function ModalCreateUser(props) {
         data.append('userImage', avatar);
 
         let res = await axios.post('http://localhost:8081/api/v1/participant', data);
-        console.log('check response: ', res);
+        console.log('check response: ', res.data);
+
+        if(res.data && res.data.EC === 0) {
+            toast.success(res.data.EM)
+            handleClose()
+        }
+
+        if(res.data && res.data.EC === 1) {
+            toast.error(res.data.EM)
+
+        }
     };
 
     const handlePreviewImage = (e) => {
@@ -145,6 +167,7 @@ function ModalCreateUser(props) {
                     </Button>
                 </Modal.Footer>
             </Modal>
+           
         </>
     );
 }
