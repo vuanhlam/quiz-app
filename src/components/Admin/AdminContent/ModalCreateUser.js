@@ -8,7 +8,6 @@ import { postCreateNewUser } from '~/services/apiServices'
 
 function ModalCreateUser(props) {
     const { show, setShow } = props;
-    // const [show, setShow] = useState(false);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -55,6 +54,7 @@ function ModalCreateUser(props) {
         if(res && res.EC === 0) {
             toast.success(res.EM)
             handleClose()
+            await props.fetchListUsers();
         }
 
         if(res && res.EC === 1) {
@@ -119,8 +119,13 @@ function ModalCreateUser(props) {
                         </div>
                         <div className="col-md-4">
                             <label className="form-label">Role</label>
-                            <select id="inputState" className="form-select" onChange={(e) => setRole(e.target.value)}>
-                                <option value={role}>USER</option>
+                            <select 
+                                id="inputState" 
+                                className="form-select" 
+                                onChange={(e) => setRole(e.target.value)}
+                                value={role}
+                            >
+                                <option value="USER">USER</option>
                                 <option value="ADMIN">ADMIN</option>
                             </select>
                         </div>
