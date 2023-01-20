@@ -3,6 +3,8 @@ import ModalCreateUser from "./ModalCreateUser";
 
 import { useState } from 'react';
 import { IoMdPersonAdd } from 'react-icons/io'
+import TableUser from './TableUser';
+
 
 function ManageUser() {
 
@@ -22,13 +24,14 @@ function ManageUser() {
                     </button>
                 </div>
                 <div className='table-user'>
-
+                    <TableUser/>
                 </div>
                 <ModalCreateUser 
                     show={show}
                     setShow={setShow}
                 />
             </div>
+           
         </div>
     );
 }
