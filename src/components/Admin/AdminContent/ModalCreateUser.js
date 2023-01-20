@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { BiUpload } from 'react-icons/bi';
-import axios from 'axios';
 import { toast } from 'react-toastify';
 
-
+import { postCreateNewUser } from '~/services/apiServices'
 
 function ModalCreateUser(props) {
     const { show, setShow } = props;
@@ -42,7 +41,7 @@ function ModalCreateUser(props) {
             return;
         }
 
-        if(!password) {
+        if(!password) { 
             toast.error('Invalid password');
             return;
         }
@@ -50,24 +49,16 @@ function ModalCreateUser(props) {
         // if you don't have field file to send, just use object to send to the server
         // if have file must use form data support send file to server
 
-        const data = new FormData();
-        data.append('email', email);
-        data.append('password', password);
-        data.append('username', userName);
-        data.append('role', role);
-        data.append('userImage', avatar);
+        let res = await postCreateNewUser(email, password, userName, role, avatar);
+        console.log('check response: ', res);
 
-        let res = await axios.post('http://localhost:8081/api/v1/participant', data);
-        console.log('check response: ', res.data);
-
-        if(res.data && res.data.EC === 0) {
-            toast.success(res.data.EM)
+        if(res && res.EC === 0) {
+            toast.success(res.EM)
             handleClose()
         }
 
-        if(res.data && res.data.EC === 1) {
-            toast.error(res.data.EM)
-
+        if(res && res.EC === 1) {
+            toast.error(res.EM)
         }
     };
 
@@ -167,7 +158,6 @@ function ModalCreateUser(props) {
                     </Button>
                 </Modal.Footer>
             </Modal>
-           
         </>
     );
 }
