@@ -49,7 +49,6 @@ function ModalCreateUser(props) {
         // if have file must use form data support send file to server
 
         let res = await postCreateNewUser(email, password, userName, role, avatar);
-        console.log('check response: ', res);
 
         if(res && res.EC === 0) {
             toast.success(res.EM)
@@ -57,7 +56,7 @@ function ModalCreateUser(props) {
             await props.fetchListUsers();
         }
 
-        if(res && res.EC === 1) {
+        if(res && res.EC !== 0) {
             toast.error(res.EM)
         }
     };

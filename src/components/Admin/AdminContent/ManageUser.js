@@ -91,6 +91,8 @@ function ManageUser() {
                     showDeleteConfirm={showDeleteConfirm}
                     setShowDeleteConfirm={setShowDeleteConfirm}
                     userDelete={userDelete}
+                    fetchListUsers={fetchListUsers}
+
                 />  
             </div>
         </div>
