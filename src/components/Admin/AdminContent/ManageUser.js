@@ -10,7 +10,9 @@ import ModalUpdateUser from './ModalUpdateUser';
 function ManageUser() {
 
     const [show, setShow] = useState(false);
-    const [listUsers, setListUser] = useState([])
+    const [showUpdate, setShowUpdate] = useState(false);
+    const [listUsers, setListUser] = useState([]);
+    const [updateUser, setUpdateUser] = useState({});
 
     useEffect(() => {
         fetchListUsers();
@@ -21,6 +23,11 @@ function ManageUser() {
         if(res.EC === 0) {
             setListUser(res.DT)
         }
+    }
+
+    const handleUpdateUser = (user) => {
+        setShowUpdate(true)
+        setUpdateUser(user)
     }
 
     return (
@@ -39,6 +46,7 @@ function ManageUser() {
                 <div className='table-user'>
                     <TableUser
                         listUsers={listUsers}
+                        handleUpdateUser={handleUpdateUser}
                     />
                 </div>
                 <ModalCreateUser 
@@ -47,8 +55,9 @@ function ManageUser() {
                     fetchListUsers={fetchListUsers}
                 />
                 <ModalUpdateUser
-
-                
+                    showUpdate={showUpdate}
+                    setShowUpdate={setShowUpdate}
+                    updateUser={updateUser}
                 />
             </div>
            

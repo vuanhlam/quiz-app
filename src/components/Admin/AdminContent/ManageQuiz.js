@@ -1,8 +1,12 @@
 
 
+
 function ManageQuiz() {
   return (
-    <h1>Manage Quiz</h1>
+    <h1>
+      Manage Quiz
+      
+    </h1>
   )
 }
 
