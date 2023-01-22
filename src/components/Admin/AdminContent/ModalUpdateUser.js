@@ -5,18 +5,18 @@ import { BiUpload } from 'react-icons/bi';
 import { toast } from 'react-toastify';
 import _ from 'lodash'
 
-import { postCreateNewUser } from '~/services/apiServices';
+import { putUpdateUser } from '~/services/apiServices';
 
 function ModalUpdateUser(props) {
 
     const { 
         showUpdate, 
         setShowUpdate,
-        updateUser 
+        updateUser,
+        resetUpdateUser
     } = props;
 
-    console.log('update user: ', updateUser);
-
+    // const [userId, setUserID] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [userName, setUserName] = useState('');
@@ -26,7 +26,6 @@ function ModalUpdateUser(props) {
     useEffect(() => {
         if(!_.isEmpty(updateUser)) {
             setEmail(updateUser.email);
-            // setPassword('');
             setUserName(updateUser.username);
             setRole(updateUser.role);
             if(updateUser.image) {
@@ -42,33 +41,12 @@ function ModalUpdateUser(props) {
         setUserName('');
         setRole('');
         setAvatar('');
+        resetUpdateUser({})
     };
 
-    const validateEmail = (email) => {
-        return String(email)
-            .toLowerCase()
-            .match(
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-            );
-    };
-
-    const handleSubmitCreateUser = async () => {
-        // validate
-        const isValidEmail = validateEmail(email);
-        if (!isValidEmail) {
-            toast.error('Invalid Email');
-            return;
-        }
-
-        if (!password) {
-            toast.error('Invalid password');
-            return;
-        }
-
-        // if you don't have field file to send, just use object to send to the server
-        // if have file must use form data support send file to server
-
-        let res = await postCreateNewUser(email, password, userName, role, avatar);
+    const handleUpdateUser = async () => {
+       
+        let res = await putUpdateUser(updateUser.id, userName, role, avatar);
 
         if (res && res.EC === 0) {
             toast.success(res.EM);
@@ -76,7 +54,7 @@ function ModalUpdateUser(props) {
             await props.fetchListUsers();
         }
 
-        if (res && res.EC === 1) {
+        if (res && res.EC !== 0) {
             toast.error(res.EM);
         }
     };
@@ -99,10 +77,6 @@ function ModalUpdateUser(props) {
 
     return (
         <>
-            {/* <Button variant="primary" onClick={handleShow}>
-                Add New User
-            </Button> */}
-            
             <Modal show={showUpdate} onHide={handleClose} size="xl" backdrop="static" className="modal-add-user">
                 <Modal.Header closeButton>
                     <Modal.Title>Update User</Modal.Title>
@@ -167,16 +141,21 @@ function ModalUpdateUser(props) {
                         </div>
 
                         <div className="modal-image-review">
-                            {avatar ? (
-                                <img src={`data:image/jpeg;base64,${avatar}`} alt="avatar" />
-                            ) : (
-                                <span className="preview-title">Preview Image</span>
-                            )}
+                            {
+                            
+                                avatar ? (
+                                    <img src={`data:image/jpeg;base64,${avatar}`} alt="avatar" />
+                                ) : (
+                                    <span className="preview-title">Preview Image</span>
+                                )
+                                
+                            
+                            }
                         </div>
                     </form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="primary" onClick={handleSubmitCreateUser}>
+                    <Button variant="primary" onClick={handleUpdateUser}>
                         Update User
                     </Button>
                     <Button variant="secondary" onClick={handleClose}>

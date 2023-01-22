@@ -26,6 +26,7 @@ function ManageUser() {
     }
 
     const handleUpdateUser = (user) => {
+        console.log('>>> check user: ', user);
         setShowUpdate(true)
         setUpdateUser(user)
     }
@@ -58,6 +59,8 @@ function ManageUser() {
                     showUpdate={showUpdate}
                     setShowUpdate={setShowUpdate}
                     updateUser={updateUser}
+                    fetchListUsers={fetchListUsers}
+                    resetUpdateUser={setUpdateUser}
                 />
             </div>
            
