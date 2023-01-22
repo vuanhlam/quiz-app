@@ -1,22 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { BiUpload } from 'react-icons/bi';
-import { toast } from 'react-toastify';
 import _ from 'lodash'
 
-import { putUpdateUser } from '~/services/apiServices';
 
-function ModalUpdateUser(props) {
+function ModalViewUser(props) {
 
     const { 
-        showUpdate, 
-        setShowUpdate,
-        updateUser,
-        resetUpdateUser
+        user,
+        setShowViewUser,
+        showViewUser,
+        setUser,
     } = props;
 
-    // const [userId, setUserID] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [userName, setUserName] = useState('');
@@ -24,39 +20,24 @@ function ModalUpdateUser(props) {
     const [avatar, setAvatar] = useState();
 
     useEffect(() => {
-        if(!_.isEmpty(updateUser)) {
-            setEmail(updateUser.email);
-            setUserName(updateUser.username);
-            setRole(updateUser.role);
-            if(updateUser.image) {
-                setAvatar(updateUser.image);    
+        if(!_.isEmpty(user)) {
+            setEmail(user.email);
+            setUserName(user.username);
+            setRole(user.role);
+            if(user.image) {
+                setAvatar(user.image);    
             }
         }
-    }, [updateUser])
+    }, [user])
 
     const handleClose = () => {
-        setShowUpdate(false);
+        setShowViewUser(false);
         setEmail('');
         setPassword('');
         setUserName('');
         setRole('');
         setAvatar('');
-        resetUpdateUser({})
-    };
-
-    const handleUpdateUser = async () => {
-       
-        let res = await putUpdateUser(updateUser.id, userName, role, avatar);
-
-        if (res && res.EC === 0) {
-            toast.success(res.EM);
-            handleClose();
-            await props.fetchListUsers();
-        }
-
-        if (res && res.EC !== 0) {
-            toast.error(res.EM);
-        }
+        setUser({});
     };
 
     const handlePreviewImage = (e) => {
@@ -77,9 +58,9 @@ function ModalUpdateUser(props) {
 
     return (
         <>
-            <Modal show={showUpdate} onHide={handleClose} size="xl" backdrop="static" className="modal-add-user">
+            <Modal show={showViewUser} onHide={handleClose} size="xl" backdrop="static" className="modal-add-user">
                 <Modal.Header closeButton>
-                    <Modal.Title>Update User</Modal.Title>
+                    <Modal.Title>User Detail</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <form className="row g-3">
@@ -88,8 +69,7 @@ function ModalUpdateUser(props) {
                             <input
                                 type="email"
                                 value={email}
-                                disabled={true}
-                                onChange={(e) => setEmail(e.target.value)}
+                                readOnly
                                 className="form-control"
                                 />
                         </div>
@@ -97,9 +77,8 @@ function ModalUpdateUser(props) {
                             <label className="form-label">Password</label>
                             <input
                                 type="password"
+                                disabled
                                 value={password}
-                                disabled={true}
-                                onChange={(e) => setPassword(e.target.value)}
                                 className="form-control"
                                 />
                         </div>
@@ -108,7 +87,7 @@ function ModalUpdateUser(props) {
                             <input
                                 type="text"
                                 value={userName}
-                                onChange={(e) => setUserName(e.target.value)}
+                                readOnly
                                 className="form-control"
                                 />
                         </div>
@@ -117,8 +96,8 @@ function ModalUpdateUser(props) {
                             <select
                                 id="inputState"
                                 className="form-select"
-                                onChange={(e) => setRole(e.target.value)}
                                 value={role}
+                                readOnly
                             >
                                 <option value="USER">USER</option>
                                 <option value="ADMIN">ADMIN</option>
@@ -126,9 +105,8 @@ function ModalUpdateUser(props) {
                         </div>
 
                         <div className="col-md-12">
-                            <label className="form-label label-upload" htmlFor="uploadInput">
-                                <span>Upload Image</span>
-                                <BiUpload />
+                            <label className="form-label label-upload">
+                                <span>Avatar</span>
                             </label>
                             <input
                                 type="file"
@@ -142,24 +120,18 @@ function ModalUpdateUser(props) {
 
                         <div className="modal-image-review">
                             {
-                            
                                 avatar ? (
                                     <img src={`data:image/jpeg;base64,${avatar}`} alt="avatar" />
                                 ) : (
                                     <span className="preview-title">Preview Image</span>
                                 )
-                                
-                            
                             }
                         </div>
                     </form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="primary" onClick={handleUpdateUser}>
-                        Update User
-                    </Button>
                     <Button variant="secondary" onClick={handleClose}>
-                        Cancel
+                        Close
                     </Button>
                 </Modal.Footer>
             </Modal>
@@ -167,4 +139,4 @@ function ModalUpdateUser(props) {
     );
 }
 
-export default ModalUpdateUser;
+export default ModalViewUser;

@@ -2,7 +2,12 @@
 
 function TableUser(props) {
 
-    const { listUsers, handleUpdateUser } = props;
+    const { 
+        listUsers, 
+        handleUpdateUser,
+        handleViewUser,
+        handleDelete
+    } = props;
 
     return (
         <>
@@ -27,14 +32,24 @@ function TableUser(props) {
                                 <td>{user.email}</td>
                                 <td>{user.role}</td>
                                 <td>
-                                    <button className="btn btn-secondary">View</button>
+                                    <button 
+                                        className="btn btn-secondary"
+                                        onClick={() => handleViewUser(user)}
+                                    >
+                                        View
+                                    </button>
                                     <button 
                                         className="btn btn-warning mx-3"
                                         onClick={() => handleUpdateUser(user)}
                                     >
                                         Update
                                     </button>
-                                    <button className="btn btn-danger">Delete</button>
+                                    <button 
+                                        className="btn btn-danger"
+                                        onClick={() => handleDelete(user)}
+                                    >
+                                        Delete
+                                    </button>
                                 </td>
                             </tr>
                         )

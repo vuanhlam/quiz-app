@@ -4,15 +4,22 @@ import { useEffect, useState } from "react";
 import * as MyAPI from '~/services/apiServices'
 import '~/components/Admin/AdminContent/ManageUser.scss';
 import ModalCreateUser from "./ModalCreateUser";
-import TableUser from './TableUser';
 import ModalUpdateUser from './ModalUpdateUser';
+import ModalViewUser from './ModalViewUser'
+import TableUser from './TableUser';
+import ModalDeleteUser from './ModalDeleteUser';
 
 function ManageUser() {
 
     const [show, setShow] = useState(false);
     const [showUpdate, setShowUpdate] = useState(false);
+    const [showViewUser, setShowViewUser] = useState(false);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
     const [listUsers, setListUser] = useState([]);
     const [updateUser, setUpdateUser] = useState({});
+    const [user, setUser] = useState({});
+    const [userDelete, setUserDelete] = useState({});
 
     useEffect(() => {
         fetchListUsers();
@@ -26,9 +33,19 @@ function ManageUser() {
     }
 
     const handleUpdateUser = (user) => {
-        console.log('>>> check user: ', user);
         setShowUpdate(true)
         setUpdateUser(user)
+    }
+
+    const handleViewUser = (user) => {
+        setShowViewUser(true)
+        setUser(user)
+    }
+
+    const handleDelete = (user) => {
+        setShowDeleteConfirm(true)
+        setUserDelete(user);
+        console.log(user);
     }
 
     return (
@@ -48,6 +65,8 @@ function ManageUser() {
                     <TableUser
                         listUsers={listUsers}
                         handleUpdateUser={handleUpdateUser}
+                        handleViewUser={handleViewUser}
+                        handleDelete={handleDelete}
                     />
                 </div>
                 <ModalCreateUser 
@@ -62,8 +81,18 @@ function ManageUser() {
                     fetchListUsers={fetchListUsers}
                     resetUpdateUser={setUpdateUser}
                 />
+                <ModalViewUser
+                    user={user}
+                    setShowViewUser={setShowViewUser}
+                    showViewUser={showViewUser}
+                    setUser={setUser}
+                />
+                <ModalDeleteUser
+                    showDeleteConfirm={showDeleteConfirm}
+                    setShowDeleteConfirm={setShowDeleteConfirm}
+                    userDelete={userDelete}
+                />  
             </div>
-           
         </div>
     );
 }
