@@ -97,7 +97,7 @@ function ModalViewUser(props) {
                                 id="inputState"
                                 className="form-select"
                                 value={role}
-                                readOnly
+                                // readOnly
                             >
                                 <option value="USER">USER</option>
                                 <option value="ADMIN">ADMIN</option>

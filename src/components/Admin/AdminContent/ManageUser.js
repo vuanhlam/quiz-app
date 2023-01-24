@@ -64,9 +64,9 @@ function ManageUser() {
                 <div className='table-user'>
                     <TableUser
                         listUsers={listUsers}
-                        handleUpdateUser={handleUpdateUser}
-                        handleViewUser={handleViewUser}
-                        handleDelete={handleDelete}
+                        // handleUpdateUser={handleUpdateUser}
+                        // handleViewUser={handleViewUser}
+                        // handleDelete={handleDelete}
                     />
                 </div>
                 <ModalCreateUser 
@@ -74,26 +74,25 @@ function ManageUser() {
                     setShow={setShow}
                     fetchListUsers={fetchListUsers}
                 />
-                <ModalUpdateUser
+                {/* <ModalUpdateUser
                     showUpdate={showUpdate}
                     setShowUpdate={setShowUpdate}
                     updateUser={updateUser}
                     fetchListUsers={fetchListUsers}
                     resetUpdateUser={setUpdateUser}
-                />
-                <ModalViewUser
+                /> */}
+                {/* <ModalViewUser
                     user={user}
                     setShowViewUser={setShowViewUser}
                     showViewUser={showViewUser}
                     setUser={setUser}
-                />
-                <ModalDeleteUser
+                /> */}
+                {/* <ModalDeleteUser
                     showDeleteConfirm={showDeleteConfirm}
                     setShowDeleteConfirm={setShowDeleteConfirm}
                     userDelete={userDelete}
                     fetchListUsers={fetchListUsers}
-
-                />  
+                />   */}
             </div>
         </div>
     );

@@ -7,7 +7,11 @@ import { toast } from 'react-toastify';
 import { postCreateNewUser } from '~/services/apiServices'
 
 function ModalCreateUser(props) {
-    const { show, setShow } = props;
+    const { 
+        show, 
+        setShow,
+        fetchListUsers
+    } = props;
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -37,7 +41,7 @@ function ModalCreateUser(props) {
         const isValidEmail = validateEmail(email);
         if(!isValidEmail) {
             toast.error('Invalid Email');
-            return;
+            return; 
         }
 
         if(!password) { 
@@ -49,11 +53,12 @@ function ModalCreateUser(props) {
         // if have file must use form data support send file to server
 
         let res = await postCreateNewUser(email, password, userName, role, avatar);
+        console.log(res);
 
         if(res && res.EC === 0) {
             toast.success(res.EM)
             handleClose()
-            await props.fetchListUsers();
+            await fetchListUsers();
         }
 
         if(res && res.EC !== 0) {

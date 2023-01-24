@@ -11,6 +11,7 @@ const postCreateNewUser = (email, password, userName, role, avatar) => {
     data.append('username', userName);
     data.append('role', role);
     data.append('userImage', avatar);
+    console.log(role);
 
     return axios.post('api/v1/participant', data);
 };
