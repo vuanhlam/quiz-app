@@ -32,7 +32,12 @@ function Login() {
         <div className="login-container">
             <div className="header">
                 Don't have an account yet?
-                <button className="signUp-btn">Sign up</button>
+                <button 
+                    className="signUp-btn"
+                    onClick={() => {navigate('/register')}}
+                >
+                    Sign up
+                </button>
             </div>
             <div className="wrap-login">
                 <div className="title col-3 mx-auto">Quizlet</div>

@@ -39,6 +39,15 @@ const postLogin = (email, password) => {
     });                          // urlencoded
 };
 
+// -- post register --
+const postRegister = (email, username, password) => {
+    return axios.post(`api/v1/register`, {
+        email,       
+        username,
+        password,
+    });                          // urlencoded
+};
+
 // -- update user --
 const putUpdateUser = (id, userName, role, avatar) => {
     const data = new FormData();
@@ -56,5 +65,6 @@ export {
     putUpdateUser, 
     deleteUser, 
     getUserWithPaginate,
-    postLogin 
+    postLogin,
+    postRegister
 };

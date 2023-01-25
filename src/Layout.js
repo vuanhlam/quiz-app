@@ -11,6 +11,7 @@ import ManageUser from './components/Admin/AdminContent/ManageUser';
 import ManageQuiz from './components/Admin/AdminContent/ManageQuiz';
 import ManageQuestion from './components/Admin/AdminContent/ManageQuestion';
 import Login from './components/Auth/Login';
+import Register from './components/Auth/Register';
 
 function Layout() {
     return (
@@ -30,6 +31,7 @@ function Layout() {
                     </Route>
 
                     <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
                 </Routes>
                 <ToastContainer
                     position="top-right"

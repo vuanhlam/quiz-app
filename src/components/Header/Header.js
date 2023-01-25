@@ -41,12 +41,15 @@ function Header() {
                         {/* <button>Log In</button> */}
                         <Button
                           variant="outline-primary"
-                          onClick={() => handleLogin()}
-                          
+                          onClick={() => handleLogin()}                         
                         >
                           Log In
                         </Button>
-                        <Button className="signUp-btn" variant="primary">
+                        <Button 
+                            className="signUp-btn" 
+                            variant="primary"
+                            onClick={() => { navigate('/register') }}                         
+                        >
                             Sign Up
                         </Button>
                         {/* <button>Sign Up</button> */}
