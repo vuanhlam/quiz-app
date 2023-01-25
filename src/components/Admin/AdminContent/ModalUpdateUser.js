@@ -39,7 +39,7 @@ function ModalUpdateUser(props) {
         setEmail('');
         setPassword('');
         setUserName('');
-        setRole('');
+        setRole('USER');
         setAvatar('');
         resetUpdateUser({})
     };
