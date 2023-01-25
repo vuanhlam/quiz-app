@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import './Login.scss';
 import { useNavigate } from 'react-router-dom';
+import { postLogin } from '~/services/apiServices';
+import { toast } from 'react-toastify';
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -8,8 +10,22 @@ function Login() {
 
     const navigate = useNavigate();
 
-    const handleLogin = () => {
-        alert('login');
+    const handleLogin = async() => {
+        // validate
+
+
+        //submit apis
+        let res = await postLogin(email, password);
+        console.log(res)
+
+        if(res && res.EC === 0) {
+            toast.success(res.EM);
+            navigate('/')
+        }
+
+        if(res && res.EC !== 0) {
+            toast.error(res.EM)
+        }
     };
 
     return (
