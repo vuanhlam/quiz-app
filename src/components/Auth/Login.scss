@@ -1,0 +1,77 @@
+.login-container {
+    
+    .wrap-login {
+        // border: 1px solid #ccc;
+    }
+
+    .header {
+        height: 44px;
+        text-align: right;
+        margin-right: 20px;
+        margin-top: 20px;
+
+        .signUp-btn {
+            border: 1px solid #4255ff;
+            background-color: white;
+            border-radius: 3px;
+            font-size: 12px;
+            padding: 5px 15px;
+
+            &:hover {
+                background-color: #4255ff;
+                color: white;
+            }
+        }
+    }
+
+    .title {
+        font-size: 30px;
+        text-align: center;
+        font-weight: 500;
+        color: #4255ff;
+        padding: 20px 0;
+    }
+
+    .welcome {
+        font-size: 20px;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .forgot-password {
+        font-size: 15px;
+        color: rgb(121, 114, 114);
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    .form-group:first-child {
+        margin-bottom: 12px;
+    }
+
+    .btn-submit {
+        width: 100%;
+        height: 40px;
+        border: none;
+        background-color: #4255ff;
+        color: #ffff;
+        border-radius: 3px;
+        margin-top: 10px;
+    }
+
+    .homePage {
+        margin-top: 10px;
+        cursor: pointer;
+        color: #4255ff;
+        font-weight: 400;
+        text-align: center;
+    }
+
+    .form-control:focus {
+        color: #212529;
+        background-color: #fff;
+        border-color: #86b7fe;
+        outline: 0;
+        box-shadow: 0 0 0 0 rgb(13 110 253 / 25%);
+    }
+}

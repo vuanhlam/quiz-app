@@ -12,6 +12,7 @@ import Dashboard from './components/Admin/AdminContent/Dashboard';
 import ManageUser from './components/Admin/AdminContent/ManageUser';
 import ManageQuiz from './components/Admin/AdminContent/ManageQuiz';
 import ManageQuestion from './components/Admin/AdminContent/ManageQuestion';
+import Login from './components/Auth/Login';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -31,6 +32,8 @@ root.render(
           <Route path='manage-quizes' element={<ManageQuiz/>}/>
           <Route path='manage-questions' element={<ManageQuestion/>}/>
         </Route>
+
+        <Route path='/login' element={<Login/>}/>
 
       </Routes>
       {/* <App /> */}
