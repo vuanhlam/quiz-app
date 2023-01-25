@@ -148,7 +148,6 @@ function ModalUpdateUser(props) {
                                 ) : (
                                     <span className="preview-title">Preview Image</span>
                                 )
-                                
                             
                             }
                         </div>

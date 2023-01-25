@@ -26,6 +26,11 @@ const deleteUser = (userId) => {
     return axios.delete('api/v1/participant', {data: {id: userId}});
 }
 
+// -- get user with paginate --
+const getUserWithPaginate = (page, limit) => {
+    return axios.get(`api/v1/participant?page=${page}&limit=${limit}`);
+}
+
 // -- update user --
 const putUpdateUser = (id, userName, role, avatar) => {
     const data = new FormData();
@@ -42,5 +47,6 @@ export {
     postCreateNewUser,
     getAllUsers,
     putUpdateUser,
-    deleteUser
+    deleteUser,
+    getUserWithPaginate
 } 
