@@ -10,7 +10,9 @@ function ModalDeleteUser(props) {
         showDeleteConfirm, 
         setShowDeleteConfirm,
         userDelete,
-        fetchListUsers
+        fetchListUsers,
+        fetchListUsersWithPaginate,
+        setCurrentPage
     } = props;
 
     const handleClose = () => setShowDeleteConfirm(false);
@@ -21,7 +23,9 @@ function ModalDeleteUser(props) {
         if(res && res.EC === 0) {
             toast.success(res.EM)
             handleClose()
-            await fetchListUsers();
+            // await fetchListUsers();
+            setCurrentPage(1)
+            await fetchListUsersWithPaginate(1)
         }
 
         if(res && res.EC !== 0) {
