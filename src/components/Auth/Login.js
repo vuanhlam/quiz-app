@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { ImSpinner10 } from 'react-icons/im'
 
 import './Login.scss';
 import { postLogin } from '~/services/apiServices';
@@ -10,25 +11,45 @@ import { doLogin } from '~/redux/action/userActions';
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isLoading, setIsloading] = useState(false);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    const validateEmail = (email) => {
+        return String(email)
+            .toLowerCase()
+            .match(
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            );
+    };
+
     const handleLogin = async() => {
         // validate
+        if (!validateEmail(email)) {
+            toast.error('Invalid Email');
+            return;
+        }
 
+        if (!password) {
+            toast.error('Invalid password');
+            return;
+        }
 
+        setIsloading(true)
         //submit apis
-        let res = await postLogin(email, password);
+        let res = await postLogin(email, password, 5000);
         console.log(res)
 
         if(res && res.EC === 0) {
             dispatch(doLogin(res))
             toast.success(res.EM);
-            navigate('/')
+            setIsloading(false);
+            navigate('/');
         }
 
         if(res && res.EC !== 0) {
+            setIsloading(false);
             toast.error(res.EM)
         }
     };
@@ -70,7 +91,12 @@ function Login() {
                     </div>
                     <span className="forgot-password">Forgot password ?</span>
                     <div>
-                        <button className="btn-submit" onClick={() => handleLogin()}>
+                        <button 
+                            className="btn-submit" 
+                            onClick={() => handleLogin()} 
+                            disabled={isLoading}
+                        >
+                            {isLoading && <ImSpinner10 className='loader-icon'/>}
                             Login to Quizlet
                         </button>
                     </div>

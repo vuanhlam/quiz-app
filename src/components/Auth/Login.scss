@@ -13,6 +13,21 @@
             }
         }
 
+        .loader-icon {
+            margin-right: 7px;
+            top: 2px;
+            font-size: 20px;
+            animation: spin 1s infinite linear;
+        }
+        
+        @keyframes spin {
+            from {
+                transform: scale(1) rotate(0deg);
+            }
+            to {
+                transform: scale(1) rotate(360deg);
+            }
+        }
     }
 
     .header {
@@ -68,6 +83,11 @@
         color: #ffff;
         border-radius: 3px;
         margin-top: 10px;
+
+        &:disabled {
+            cursor: no-drop;
+            opacity: 0.6;
+        }
     }
 
     .homePage {
