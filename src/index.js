@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import reportWebVitals from './reportWebVitals';
-import GlobalStyle from '~/components/GlobalStyles';
-import Layout from './Layout';
-
 import { Provider } from 'react-redux';
+import 'nprogress/nprogress.css'
+
+import reportWebVitals from './reportWebVitals';
+import Layout from './Layout';
+import GlobalStyle from '~/components/GlobalStyles';
 import  store  from '~/redux/store';
 
 
