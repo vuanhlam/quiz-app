@@ -1,14 +1,18 @@
 import { useState } from 'react';
-import './Login.scss';
-import { useNavigate } from 'react-router-dom';
-import { postLogin } from '~/services/apiServices';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+
+import './Login.scss';
+import { postLogin } from '~/services/apiServices';
+import { useDispatch } from 'react-redux';
+import { doLogin } from '~/redux/action/userActions';
 
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleLogin = async() => {
         // validate
@@ -19,6 +23,7 @@ function Login() {
         console.log(res)
 
         if(res && res.EC === 0) {
+            dispatch(doLogin(res))
             toast.success(res.EM);
             navigate('/')
         }

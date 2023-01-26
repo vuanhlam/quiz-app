@@ -1,4 +1,5 @@
 import Button from 'react-bootstrap/Button';
+
 import homePageVideo from '~/assets/video/home-page-video.mp4';
 
 function Home() {
