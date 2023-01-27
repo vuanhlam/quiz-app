@@ -12,6 +12,7 @@ import ManageQuiz from './components/Admin/AdminContent/ManageQuiz';
 import ManageQuestion from './components/Admin/AdminContent/ManageQuestion';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
+import ListQuiz from './components/User/ListQuiz';
 
 function Layout() {
     return (
@@ -20,7 +21,7 @@ function Layout() {
                 <Routes>
                     <Route path="/" element={<App />}>
                         <Route index element={<Home />} />
-                        <Route path="/users" element={<User />} />
+                        <Route path="/users" element={<ListQuiz />} />
                     </Route>
 
                     <Route path="/admins" element={<Admin />}>

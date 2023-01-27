@@ -60,6 +60,13 @@ const putUpdateUser = (id, userName, role, avatar) => {
     return axios.put('api/v1/participant', data);
 };
 
+// ====================== QUIZ ==========================
+
+// -- get quiz by user --
+const getQuizByUser = () => {
+    return axios.get('api/v1/quiz-by-participant')
+}
+
 export { 
     postCreateNewUser, 
     getAllUsers, 
@@ -67,5 +74,6 @@ export {
     deleteUser, 
     getUserWithPaginate,
     postLogin,
-    postRegister
+    postRegister,
+    getQuizByUser
 };
