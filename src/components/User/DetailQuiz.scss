@@ -1,0 +1,23 @@
+.detail-quiz-container {
+    display: flex;
+    padding: 50px;
+    gap: 20px;
+
+    .test-side {
+        border: 1px solid var(--primary-color);
+        width: 70%;
+
+
+        .footer {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 22px;
+        }
+    }
+
+    .order-question-side {
+        border: 1px solid var(--btn-secondary);  
+        flex-grow: 1;
+    }
+}

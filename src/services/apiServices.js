@@ -68,8 +68,8 @@ const getQuizByUser = () => {
 }
 
 // -- get quiz Question --
-const getDataQuestion = (quizId) => {
-    return axios.get(`api/v1/questions-by-quiz?quizId=${quizId}`)
+const getDataQuestion = (id) => {
+    return axios.get(`api/v1/questions-by-quiz?quizId=${id}`)
 }
 
 export { 
