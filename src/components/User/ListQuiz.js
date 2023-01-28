@@ -29,7 +29,7 @@ function ListQuiz() {
                             <img
                                 className="card-img-top"
                                 src={`data:image/png;base64,${quiz.image}`}
-                                alt="Card image cap"
+                                alt="Card cap"
                             />
                             <div className="card-body">
                                 <h5 className="card-title">Quiz {index + 1}</h5>

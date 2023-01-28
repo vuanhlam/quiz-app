@@ -1,17 +1,29 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import _ from 'lodash';
 
 import { getDataQuestion } from '~/services/apiServices';
 import './DetailQuiz.scss'
+import Question from './Question';
 
 function DetailQuiz() {
     const params = useParams();
     const quizId = params.id;
-
     const location = useLocation();
 
-    console.log(location);
+    const [dataQuiz, setDataQuiz] = useState([]);
+    const [index, setIndex] = useState(0);
+
+    const handleBack = () => {
+        if(index - 1 < 0) return;
+        setIndex(index - 1)
+    }
+
+    const handleNext = () => {
+        if(dataQuiz.length > index + 1) {
+            setIndex(index + 1)
+        }
+    }
 
     useEffect(() => {
         fetchQuestion();
@@ -38,7 +50,7 @@ function DetailQuiz() {
                     return { questionId: key, answers, questionDescription, image };
                 })
                 .value();
-            console.log(data);
+            setDataQuiz(data);
         }
     };
 
@@ -49,25 +61,25 @@ function DetailQuiz() {
                    <center><span>Quiz {quizId}: </span>{location?.state?.quizTitle}</center>
                 </h1>
                 <hr/>
-                <div className="question-body">
-                    <figure>
-                        <img />
-                    </figure>
-                </div>
                 <div className="question-content">
-                    <h2 className='question-title'>
-                        <span>Question 1: </span>How old are you ?
-                    </h2>
-                    <div className='answer'>
-                         <div>A. asdfasdf</div>
-                         <div>B. asdfasdf</div>
-                         <div>C. asdfasdf</div>
-                         <div>D. asdfasdf</div>
-                    </div>
+                   <Question
+                        data={dataQuiz && dataQuiz.length > 0 ? dataQuiz[index] : []}
+                        index={index}
+                   />
                 </div>
                 <div className='footer'>
-                    <button className='btn btn-primary'>Back</button>
-                    <button className='btn btn-primary'>Next</button>
+                    <button 
+                        className='btn btn-primary'
+                        onClick={() => handleBack()}
+                    >
+                        Back
+                    </button>
+                    <button 
+                        className='btn btn-primary'
+                        onClick={() => handleNext()}
+                    >
+                        Next
+                    </button>
                 </div>
             </div>
             <div className="order-question-side">
