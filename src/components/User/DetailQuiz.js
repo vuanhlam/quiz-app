@@ -11,7 +11,7 @@ function DetailQuiz() {
     const quizId = params.id;
     const location = useLocation();
 
-    const [dataQuiz, setDataQuiz] = useState([]);
+    const [questionList, setQuestionList] = useState([]);
     const [index, setIndex] = useState(0);
 
     const handleBack = () => {
@@ -20,17 +20,17 @@ function DetailQuiz() {
     };
 
     const handleNext = () => {
-        if (dataQuiz.length > index + 1) {
+        if (questionList.length > index + 1) {
             setIndex(index + 1);
         }
     };
 
     const handleCheckBox = (answerId, questionId) => {
         // dùng hàm cloneDeep để sao chép tất cả các object kể cả các object lồng nhau (nested)
-        // sao chép data của dataQuiz, phải clone vì không thể trực tiếp chỉnh sửa state của React 
+        // sao chép data của questionList, phải clone vì không thể trực tiếp chỉnh sửa state của React 
         // tránh phá vỡ cấu trúc của React, dẫn đến dật lag giao diện, bug ...
-        let dataQuizClone = _.cloneDeep(dataQuiz);
-        let question = dataQuizClone.find(item => +item.questionId === +questionId) 
+        let questionListClone = _.cloneDeep(questionList);
+        let question = questionListClone.find(item => +item.questionId === +questionId) 
         if(question && question.answers) {
             let newAnwsers = question.answers.map((item) => {
                 if(item.id === answerId) {
@@ -40,10 +40,10 @@ function DetailQuiz() {
             })
             question.answers = newAnwsers;
         }
-        let index = dataQuizClone.findIndex(item => +item.questionId === +questionId);
+        let index = questionListClone.findIndex(item => +item.questionId === +questionId);
         if(index > -1) {
-            dataQuizClone[index] = question;
-            setDataQuiz(dataQuizClone);
+            questionListClone[index] = question;
+            setQuestionList(questionListClone);
         }
 
     }
@@ -74,7 +74,7 @@ function DetailQuiz() {
                     return { questionId: key, answers, questionDescription, image };
                 })
                 .value();
-            setDataQuiz(data);
+            setQuestionList(data);
         }
     };
 
@@ -90,7 +90,7 @@ function DetailQuiz() {
                 <div className="line"></div>
                 <div className="question-content">
                     <Question 
-                        data={dataQuiz && dataQuiz.length > 0 ? dataQuiz[index] : []} index={index} 
+                        question={questionList && questionList.length > 0 ? questionList[index] : []} index={index} 
                         handleCheckBox={handleCheckBox}
                     />
                 </div>

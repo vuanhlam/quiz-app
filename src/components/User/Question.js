@@ -1,9 +1,9 @@
 import _ from 'lodash';
 
 function Question(props) {
-    const { data, index } = props;
+    const { question, index } = props;
 
-    if (_.isEmpty(data)) {
+    if (_.isEmpty(question)) {
         return <></>;
     }
 
@@ -14,11 +14,11 @@ function Question(props) {
     return (
         <>
             {
-                data.image 
+                question.image 
                 ?
                     <center>
                         <figure>
-                            <img src={`data:image/png;base64, ${data.image}`} alt="question"/>
+                            <img src={`data:image/png;base64, ${question.image}`} alt="question"/>
                         </figure>
                     </center>
                 : 
@@ -30,20 +30,20 @@ function Question(props) {
             <h2 className="question-title">
                 <center>
                     <span>Question {index + 1}: </span>
-                    <span className='quiz-title'>{data.questionDescription}</span>
+                    <span className='quiz-title'>{question.questionDescription}</span>
                 </center>
             </h2>
             <div className="answer">
-                {data.answers &&
-                    data.answers.length &&
-                    data.answers.map((answer, index) => {
+                {question.answers &&
+                    question.answers.length &&
+                    question.answers.map((answer, index) => {
                         return (
                             <div key={`answer-${index}`} className="form-check">
                                 <input 
                                     className="form-check-input" 
                                     type="checkbox"
                                     checked={answer.isSelected}
-                                    onChange={(e) => handleCheckBox(answer.id, data.questionId)}
+                                    onChange={(e) => handleCheckBox(answer.id, question.questionId)}
                                 />
                                 <label className="form-check-label" >
                                 {answer.description}
