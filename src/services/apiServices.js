@@ -59,7 +59,7 @@ const putUpdateUser = (id, userName, role, avatar) => {
     return axios.put('api/v1/participant', data);
 };
 
-// ====================== QUIZ ==========================
+// ============================================================= QUIZ ===============================================================
 
 // -- get quiz by user --
 const getQuizByUser = () => {
@@ -76,6 +76,18 @@ const postSubmitQuiz = (data) => {
     return axios.post(`api/v1/quiz-submit`, {...data})       // raw data
 }
 
+// -- post create new quiz --
+const postCreateNewQuiz = (description, name, difficulty, image) => {
+    const data = new FormData();
+    data.append('description', description);
+    data.append('name', name);
+    data.append('difficulty', difficulty);
+    data.append('quizImage', image);
+
+    return axios.post('api/v1/quiz', data);
+}
+
+
 export { 
     postCreateNewUser, 
     getAllUsers, 
@@ -86,5 +98,6 @@ export {
     postRegister,
     getQuizByUser,
     getDataQuestion,
-    postSubmitQuiz
+    postSubmitQuiz,
+    postCreateNewQuiz
 };

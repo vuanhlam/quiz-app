@@ -1,18 +1,48 @@
 import Select from 'react-select';
 import { useState } from 'react'
+import { toast } from 'react-toastify';
 
 import './ManageQuiz.scss';
+import { postCreateNewQuiz } from '~/services/apiServices';
 
 function ManageQuiz() {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('')
-    const [type, setType] = useState('EASY');
+    const [type, setType] = useState(null);
     const [image, setImage] = useState(null);
 
-    const [selectedOption, setSelectedOption] = useState(null);
-
     const handleImage = (e) => {
+        if (e.target && e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            // file.preview = URL.createObjectURL(file);
+            setImage(file);
+        }else {
+            e.target.value = null;
+        }
+    }
 
+    const handleSubmitQuiz = async () => {
+        //validate  
+        if(!name) {
+            toast.error('Name is required')
+            return;
+        }
+        if(!description) {
+            toast.error('Description is required')
+            return;
+        }
+
+        //submit api
+        let res = await postCreateNewQuiz(description, name, type?.value, image);
+        console.log('check res: ', res);
+        if(res && res.EC === 0) {
+            toast.success(res.EM)
+            setName('')
+            setDescription('')
+            setImage(null)
+        }else {
+            toast.error(res.EM)
+        }
     }
 
     const options = [
@@ -50,9 +80,8 @@ function ManageQuiz() {
                     </div>
                     <div className='my-3'>
                         <Select
-                            // defaultValue={selectedOption}
-                            value={type}
-                            // onChange={setSelectedOption}
+                            defaultValue={type}
+                            onChange={setType}
                             options={options}
                             placeholder={"Quiz type .."}
                         />
@@ -64,6 +93,14 @@ function ManageQuiz() {
                             className='form-control'
                             onChange={(e) => handleImage(e)}
                         />
+                    </div>
+                    <div className='mt-3'>
+                        <button
+                            className='btn btn-warning'
+                            onClick={() => handleSubmitQuiz()} 
+                        >
+                            Save
+                        </button>
                     </div>
                 </fieldset>
                 <div>
