@@ -25,6 +25,40 @@ function DetailQuiz() {
         }
     };
 
+    const handleSubmit = () => {
+        // {
+        //     "quizId": 1,
+        //     "answers": [
+        //         { 
+        //             "questionId": 1,
+        //             "userAnswerId": [3]
+        //         },
+        //         { 
+        //             "questionId": 2,
+        //             "userAnswerId": [6]
+        //         }
+        //     ]
+        // }
+        const payLoad = {
+            quizId: +quizId
+
+        };
+        if(questionList && questionList.length > 0) {
+            let results = questionList.map((question) => {
+                let data = {};
+                data.questionId = +question.questionId;
+                data.userAnswerId = []
+                question.answers.forEach((answer) => {
+                    if(answer.isSelected) {
+                        data.userAnswerId.push(answer.id);
+                    }
+                })
+                return data;
+            })
+            payLoad.answers = results;
+        }
+    }
+
     const handleCheckBox = (answerId, questionId) => {
         // dùng hàm cloneDeep để sao chép tất cả các object kể cả các object lồng nhau (nested)
         // sao chép data của questionList, phải clone vì không thể trực tiếp chỉnh sửa state của React 
@@ -101,7 +135,7 @@ function DetailQuiz() {
                     <button className="btn btn-primary" onClick={() => handleNext()}>
                         Next
                     </button>
-                    <button className="btn btn-warning" onClick={() => handleNext()}>
+                    <button className="btn btn-warning" onClick={() => handleSubmit()}>
                         Finish
                     </button>
                 </div>
