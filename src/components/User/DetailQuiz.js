@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import _ from 'lodash';
 
-import { getDataQuestion } from '~/services/apiServices';
+import { getDataQuestion, postSubmitQuiz } from '~/services/apiServices';
 import './DetailQuiz.scss';
 import Question from './Question';
+import ModalResult from './ModalResult';
 
 function DetailQuiz() {
     const params = useParams();
@@ -13,6 +14,8 @@ function DetailQuiz() {
 
     const [questionList, setQuestionList] = useState([]);
     const [index, setIndex] = useState(0);
+    const [isShowModalResult, setShowModalResult] = useState(false);
+    const [dataModalResult, setDataModalResult] = useState({});
 
     const handleBack = () => {
         if (index - 1 < 0) return;
@@ -25,7 +28,7 @@ function DetailQuiz() {
         }
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         // {
         //     "quizId": 1,
         //     "answers": [
@@ -56,6 +59,19 @@ function DetailQuiz() {
                 return data;
             })
             payLoad.answers = results;
+        }
+        //submit api
+        let res = await postSubmitQuiz(payLoad);
+        console.log('check res: ', res);
+        if(res && res.EC === 0) {
+            setDataModalResult({
+                countCorrect: res.DT.countCorrect,
+                countTotal: res.DT.countTotal,
+                quizData: res.DT.quizData
+            })
+            setShowModalResult(true)
+        }else {
+            console.log('something go wrong!!');
         }
     }
 
@@ -145,6 +161,11 @@ function DetailQuiz() {
                     <h1>Count Down</h1>
                 </center>
             </div>
+            <ModalResult
+                show={isShowModalResult}
+                setShow={setShowModalResult}
+                data={dataModalResult}
+            />
         </div>
     );
 }
