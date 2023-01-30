@@ -8,12 +8,12 @@ import Admin from './components/Admin/Admin';
 import Home from './components/Home/Home';
 import Dashboard from './components/Admin/AdminContent/Dashboard';
 import ManageUser from './components/Admin/AdminContent/ManageUser';
-import ManageQuiz from './components/Admin/AdminContent/ManageQuiz';
 import ManageQuestion from './components/Admin/AdminContent/ManageQuestion';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import ListQuiz from './components/User/ListQuiz';
 import DetailQuiz from './components/User/DetailQuiz';
+import ManageQuiz from './components/Admin/AdminContent/Quiz/ManageQuiz';
 
 const NotFound = () => {
     return (

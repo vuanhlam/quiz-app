@@ -5,12 +5,14 @@ import { RiDashboard3Fill } from 'react-icons/ri';
 import { MdOutlineFeaturedPlayList } from 'react-icons/md';
 import { BsFillBarChartFill } from 'react-icons/bs';
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import sidebarBg from '~/assets/images/bg2.jpg';
+import './SideBar.scss'
 
 const SideBar = (props) => {
     const { collapsed, toggled, handleToggleSidebar } = props;
+    const navigate = useNavigate();
     return (
         <ProSidebar
             image={sidebarBg}
@@ -33,7 +35,12 @@ const SideBar = (props) => {
                     }}
                 >
                     <SiReactivex size={'3em'} color={'00bfff'} />
-                    <span className="title">Quizlet Dashboard</span>
+                    <span 
+                        className="title"
+                        onClick={() => {navigate('/')}}
+                    >
+                        Quizlet
+                    </span>
                 </div>
             </SidebarHeader>
 
