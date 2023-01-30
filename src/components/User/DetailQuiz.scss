@@ -4,7 +4,8 @@
     gap: 20px;
 
     .test-side {
-        border: 1px solid var(--primary-color);
+        border: 1px solid #ccc;
+        border-radius: 3px;
         width: 70%;
 
 
@@ -12,7 +13,7 @@
             display: flex;
             justify-content: center;
             gap: 10px;
-            margin-top: 22px;
+            padding: 10px;
         }
 
         .question-content {
@@ -20,13 +21,33 @@
             transform: translateX(-50%);
 
             img {
-                width: 400px;
+                width: 300px;
             }
+
+            .q-image {
+                width: 300px;
+                height: 224.53px;
+            }
+
+            .question-title {
+
+                .quiz-title {
+                    font-size: 30px;
+                }
+            }
+        }
+
+        .line {
+            border-bottom: 1px solid #ccc;
+            width: 80%;
+            margin: 0 auto;
+            margin-bottom: 10px;
         }
     }
 
     .order-question-side {
         border: 1px solid #1976d2;  
+        border-radius: 3px;
         flex-grow: 1;
     }
 }

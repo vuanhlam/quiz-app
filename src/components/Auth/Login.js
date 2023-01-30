@@ -38,7 +38,7 @@ function Login() {
 
         setIsloading(true)
         //submit apis
-        let res = await postLogin(email, password, 5000);
+        let res = await postLogin(email, password);
         console.log(res)
 
         if(res && res.EC === 0) {
