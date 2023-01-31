@@ -4,6 +4,11 @@
     margin: 0;
 }
 
+
+body {
+    // overflow: hidden;
+}
+
 :root {
     --primary-color: #4255ff;
     --btn-color: #1976d2;
@@ -118,3 +123,4 @@
 .btn-warning {
     background-color: var(--btn-warning);
 }
+

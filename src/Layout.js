@@ -8,12 +8,12 @@ import Admin from './components/Admin/Admin';
 import Home from './components/Home/Home';
 import Dashboard from './components/Admin/AdminContent/Dashboard';
 import ManageUser from './components/Admin/AdminContent/ManageUser';
-import ManageQuestion from './components/Admin/AdminContent/ManageQuestion';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import ListQuiz from './components/User/ListQuiz';
 import DetailQuiz from './components/User/DetailQuiz';
 import ManageQuiz from './components/Admin/AdminContent/Quiz/ManageQuiz';
+import Questions from './components/Admin/AdminContent/Question/Questions';
 
 const NotFound = () => {
     return (
@@ -38,7 +38,7 @@ function Layout() {
                         <Route index element={<Dashboard />} />
                         <Route path="manage-users" element={<ManageUser />} />
                         <Route path="manage-quizes" element={<ManageQuiz />} />
-                        <Route path="manage-questions" element={<ManageQuestion />} />
+                        <Route path="manage-questions" element={<Questions />} />
                     </Route>
 
                     <Route path="/login" element={<Login />} />

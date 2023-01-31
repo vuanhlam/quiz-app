@@ -2,12 +2,10 @@ import { FaBars } from 'react-icons/fa';
 import { useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import { Outlet } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
-
+import PerfectScrollbar from 'react-perfect-scrollbar';
 
 import SideBar from './SideBar';
 import './Admin.scss';
-
 
 function Admin() {
     const [collapsed, setCollapsed] = useState(false);
@@ -21,11 +19,12 @@ function Admin() {
                 <div className="amdin-header">
                     <FaBars className="control-btn-sidebar" onClick={() => setCollapsed(!collapsed)} />
                 </div>
-                <div className="admin-content">
-                    <Outlet />
+                <div className="admin-main">
+                    <PerfectScrollbar>
+                        <Outlet />
+                    </PerfectScrollbar>
                 </div>
             </div>
-            
         </div>
     );
 }
