@@ -5,6 +5,9 @@ import { FaRegTimesCircle } from 'react-icons/fa';
 import { v4 as uuidv4 } from 'uuid';
 import _ from 'lodash';
 import Lightbox from "react-awesome-lightbox";
+import { toast } from 'react-toastify';
+
+
 import { getAllQuizForAdmin } from '~/services/apiServices';
 import { postCreateQuestionForQuiz, postCreateAnswerForQuestion } from '~/services/apiServices';
 
@@ -19,7 +22,7 @@ function Questions() {
         url: '',
         title: ''
     })
-    const [questions, setQuestions] = useState([
+    const initQuestion = [
         {
             id: uuidv4(),
             description: '',
@@ -33,7 +36,8 @@ function Questions() {
                 },
             ],
         },
-    ]);
+    ]
+    const [questions, setQuestions] = useState(initQuestion);
 
     useEffect(() => {
         fetchQuiz();
@@ -51,8 +55,6 @@ function Questions() {
             setListQuiz(newQuiz);
         }
     };
-
-    console.log(listQuiz);
 
     const hanldeAddRemoveQuestion = (type, id) => {
         if (type === 'ADD') {
@@ -156,27 +158,49 @@ function Questions() {
     }
 
     const hanldeSubmitQuestionForQuiz = async () => {
-        console.log('questions: ', questions, selectedQuiz);
 
         // validate data  
+        if(_.isEmpty(selectedQuiz)) {
+            toast.error('Please choose a Quiz')
+            return;
+        }
+
+        // validate answer
+        let isValidAnswer = true;
+        let indexQ = 0, indexA = 0;
+        for(let i = 0; i <  questions.length; i++) {
+            for(let j = 0; j < questions[i].answers.length; j++) {
+                if(!questions[i].answers[j].description) {
+                    isValidAnswer = false;
+                    indexA = j
+                    break;
+                }
+            }
+            indexQ = i;
+            if(isValidAnswer === false) break;
+        }
         
+        if(isValidAnswer === false) {
+            toast.error(`Please enter answer ${indexA + 1} at question ${indexQ + 1}`);
+            return;
+        }
+
+        // validate question
+        let isValidQuestion = true;
+        let indexQuestion = 0
+        for(let i = 0; i <  questions.length; i++) {
+            if(!questions[i].description) {
+                isValidQuestion = false;
+                indexQuestion = i;
+                break;
+            }
+        }
         
-        //submit question
+        if(isValidQuestion === false) {
+            toast.error(`Question's description ${indexQuestion + 1} can not leave empty`);
+            return;
+        }
 
-        // -- Đoạn code này không theo trình tự vì Promise.all() giúp chạy song song đẩy tốc độ nhanh nhất có thể 
-        // nhưng bài toán là tạo câu hỏi và câu trả lời tuần tự nối tiếp nhau, do đó không dùng Promise.all()
-
-        // Promise.all(questions.map(async (question) => {
-        //     const q = await postCreateQuestionForQuiz(selectedQuiz.value, question.description, question.imageFile);
-
-        //     //submit answer
-        //     Promise.all(question.answers.map(async(answer) => {
-        //         await postCreateAnswerForQuestion(answer.description, answer.isCorrect, q.DT.id)
-        //     }))
-        //     console.log('q', q);
-        // }));
-
-        // -- sửa thành vòng for of 
         for(const question of questions) {
             const q = await postCreateQuestionForQuiz(
                     selectedQuiz.value, 
@@ -191,7 +215,8 @@ function Questions() {
                 )
             }
         }
-
+        toast.success('Create Questions and Answer success');
+        setQuestions(initQuestion);
     }
 
     return (
