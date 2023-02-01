@@ -12,15 +12,15 @@ function Questions() {
     const [questions, setQuestions] = useState([
         {
             id: uuidv4(),
-            description: 'question 1',
+            description: '',
             imageFile: '',
             imageName: '',
             answers: [
                 {
                     id: uuidv4(),
-                    description: 'answer 1',
+                    description: '',
                     isCorrect: false,
-                }
+                },
             ],
         },
     ]);
@@ -63,26 +63,68 @@ function Questions() {
             if (question) {
                 const newAnswer = {
                     id: uuidv4(),
-                    description: 'answer 2',
+                    description: '',
                     isCorrect: false,
                 };
                 question.answers.push(newAnswer);
             }
-            setQuestions(questionClone)
+            setQuestions(questionClone);
         }
 
         if (type === 'REMOVE') {
-          const questionClone = _.cloneDeep(questions);
-          const question = questionClone.find((item) => item.id === qId)
-          if(question) {
-            const newAnswer = question.answers.filter(item => item.id !== aId);
-            question.answers = newAnswer;
-          }
-          setQuestions(questionClone);
+            const questionClone = _.cloneDeep(questions);
+            const question = questionClone.find((item) => item.id === qId);
+            if (question) {
+                const newAnswer = question.answers.filter((item) => item.id !== aId);
+                question.answers = newAnswer;
+            }
+            setQuestions(questionClone);
         }
     };
 
-    console.log(questions);
+    const hanldeOnChange = (type, qId, value) => {
+        if (type === 'QUESTION') {
+            const cloneQuestions = _.cloneDeep(questions);
+            const question = cloneQuestions.find((item) => item.id === qId);
+            if (question) {
+                question.description = value;
+            }
+            setQuestions(cloneQuestions);
+        }
+    };
+
+    const hanldeOnChangeFileQuestion = (qId, e) => {
+        const cloneQuestions = _.cloneDeep(questions);
+        const question = cloneQuestions.find((item) => item.id === qId);
+        if (question && e.target && e.target.files && e.target.files[0]) {
+            question.imageFile = e.target.files[0];
+            question.imageName = e.target.files[0].name;
+        }
+        setQuestions(cloneQuestions);
+    };
+
+    const handleAnswerQuestion = (type, qId, aId, e) => {
+        const cloneQuestions = _.cloneDeep(questions);
+        const question = cloneQuestions.find((item) => item.id === qId);
+        if (question) {
+            const answer = question.answers.find((item) => item.id === aId);
+            if (answer) {
+                if (type === 'CHECKBOX') {
+                    answer.isCorrect = e.target.checked;
+                }
+                if (type === 'INPUT') {
+                    answer.description = e.target.value;    
+                }
+                setQuestions(cloneQuestions);
+            }
+        }
+    };
+
+    const hanldeSubmitQuestionForQuiz = () => {
+        console.log('questions: ', questions);
+
+    }
+
     return (
         <div className="question-wrapper">
             <h1 className="title">Manage Questions</h1>
@@ -105,14 +147,24 @@ function Questions() {
                                             className="form-control"
                                             placeholder="Password"
                                             value={question.description}
+                                            onChange={(e) => hanldeOnChange('QUESTION', question.id, e.target.value)}
                                         />
                                         <label htmlFor="floatingPassword">Question {index + 1} 's Description</label>
                                     </div>
                                     <div className="action">
                                         <div className="group-upload">
-                                            <span className="label-upload">Upload Image</span>
-                                            <input type="file" hidden />
-                                            <span>0 file is uploaded</span>
+                                            <label className="label-upload" htmlFor="up">
+                                                Upload Image
+                                            </label>
+                                            <input
+                                                id="up"
+                                                type="file"
+                                                hidden
+                                                onChange={(e) => hanldeOnChangeFileQuestion(question.id, e)}
+                                            />
+                                            <span>
+                                                {question.imageName ? question.imageName : '0 file is uploaded'}
+                                            </span>
                                         </div>
                                         <div className="job">
                                             <span
@@ -140,15 +192,19 @@ function Questions() {
                                                 <input
                                                     className="form-check-input"
                                                     type="checkbox"
-                                                    value=""
-                                                    id="flexCheckDefault"
+                                                    checked={answer.isCorrect}
+                                                    onChange={(e) =>
+                                                        handleAnswerQuestion('CHECKBOX', question.id, answer.id, e)
+                                                    }
                                                 />
                                                 <div className="form-floating form-answer">
                                                     <input
                                                         type="text"
-                                                        class="form-control"
-                                                        placeholder=""
+                                                        className="form-control"
                                                         value={answer.description}
+                                                        onChange={(e) =>
+                                                            handleAnswerQuestion('INPUT', question.id, answer.id, e)
+                                                        }
                                                     />
                                                     <label>Answer {index + 1}</label>
                                                 </div>
@@ -162,7 +218,9 @@ function Questions() {
                                                     {question.answers.length > 2 && (
                                                         <span
                                                             className="minus-btn"
-                                                            onClick={() => hanldeAddRemoveAnswer('REMOVE', question.id, answer.id)}
+                                                            onClick={() =>
+                                                                hanldeAddRemoveAnswer('REMOVE', question.id, answer.id)
+                                                            }
                                                         >
                                                             <FaRegTimesCircle />
                                                         </span>
@@ -174,7 +232,17 @@ function Questions() {
                                 <hr />
                             </div>
                         );
-                    })}
+                    })
+                }
+                {
+                    questions && questions.length > 0 &&
+                    <button 
+                        className='btn btn-warning'
+                        onClick={() => hanldeSubmitQuestionForQuiz()}
+                    >
+                        Save Questions
+                    </button>
+                }
             </div>
         </div>
     );
