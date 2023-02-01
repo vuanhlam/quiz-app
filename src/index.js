@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react'
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import 'nprogress/nprogress.css'
+import "react-awesome-lightbox/build/style.css";
 
 import reportWebVitals from './reportWebVitals';
 import Layout from './Layout';

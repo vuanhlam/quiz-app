@@ -4,11 +4,17 @@ import { MdAddCircle } from 'react-icons/md';
 import { FaRegTimesCircle } from 'react-icons/fa';
 import { v4 as uuidv4 } from 'uuid';
 import _ from 'lodash';
+import Lightbox from "react-awesome-lightbox";
 
 import './Questions.scss';
 
 function Questions() {
     const [selectedQuiz, setSelectedQuiz] = useState({});
+    const [isPreviewImage, setPreviewImage] = useState(false);
+    const [questionPreviewImage, setQuestionPreviewIamge] = useState({
+        url: '',
+        title: ''
+    })
     const [questions, setQuestions] = useState([
         {
             id: uuidv4(),
@@ -120,6 +126,18 @@ function Questions() {
         }
     };
 
+    const hanldePreviewImage = (qId) => {
+        const cloneQuestions = _.cloneDeep(questions);
+        const question = cloneQuestions.find((item) => item.id === qId);
+        if(question) {
+            setQuestionPreviewIamge({
+                url: URL.createObjectURL(question.imageFile),
+                title: question.imageName
+            })
+            setPreviewImage(true)
+        }
+    }
+
     const hanldeSubmitQuestionForQuiz = () => {
         console.log('questions: ', questions);
 
@@ -153,17 +171,28 @@ function Questions() {
                                     </div>
                                     <div className="action">
                                         <div className="group-upload">
-                                            <label className="label-upload" htmlFor="up">
+                                            <label className="label-upload" htmlFor={question.id}>
                                                 Upload Image
                                             </label>
                                             <input
-                                                id="up"
+                                                id={question.id}
                                                 type="file"
                                                 hidden
                                                 onChange={(e) => hanldeOnChangeFileQuestion(question.id, e)}
                                             />
                                             <span>
-                                                {question.imageName ? question.imageName : '0 file is uploaded'}
+                                                {
+                                                    question.imageName 
+                                                    ? 
+                                                        <span
+                                                            style={{cursor: 'pointer'}}
+                                                            onClick={() => hanldePreviewImage(question.id)}
+                                                        >
+                                                            {question.imageName}
+                                                        </span> 
+                                                    : 
+                                                    '0 file is uploaded'
+                                                }
                                             </span>
                                         </div>
                                         <div className="job">
@@ -184,7 +213,8 @@ function Questions() {
                                         </div>
                                     </div>
                                 </div>
-                                {question.answers &&
+                                {
+                                    question.answers &&
                                     question.answers.length > 0 &&
                                     question.answers.map((answer, index) => {
                                         return (
@@ -228,11 +258,20 @@ function Questions() {
                                                 </div>
                                             </div>
                                         );
-                                    })}
+                                    })
+                                }
                                 <hr />
                             </div>
                         );
                     })
+                }
+                {
+                    isPreviewImage &&
+                    <Lightbox 
+                        image={questionPreviewImage.url}
+                        title={questionPreviewImage.title} 
+                        onClose={() => setPreviewImage(false)}
+                    ></Lightbox>
                 }
                 {
                     questions && questions.length > 0 &&
@@ -244,6 +283,7 @@ function Questions() {
                     </button>
                 }
             </div>
+            
         </div>
     );
 }
