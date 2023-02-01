@@ -162,15 +162,36 @@ function Questions() {
         
         
         //submit question
-        Promise.all(questions.map(async (question) => {
-            const q = await postCreateQuestionForQuiz(selectedQuiz.value, question.description, question.imageFile);
 
-            //submit answer
-            Promise.all(question.answers.map(async(answer) => {
-                await postCreateAnswerForQuestion(answer.description, answer.isCorrect, q.DT.id)
-            }))
-            console.log('q', q);
-        }));
+        // -- Đoạn code này không theo trình tự vì Promise.all() giúp chạy song song đẩy tốc độ nhanh nhất có thể 
+        // nhưng bài toán là tạo câu hỏi và câu trả lời tuần tự nối tiếp nhau, do đó không dùng Promise.all()
+
+        // Promise.all(questions.map(async (question) => {
+        //     const q = await postCreateQuestionForQuiz(selectedQuiz.value, question.description, question.imageFile);
+
+        //     //submit answer
+        //     Promise.all(question.answers.map(async(answer) => {
+        //         await postCreateAnswerForQuestion(answer.description, answer.isCorrect, q.DT.id)
+        //     }))
+        //     console.log('q', q);
+        // }));
+
+        // -- sửa thành vòng for of 
+        for(const question of questions) {
+            const q = await postCreateQuestionForQuiz(
+                    selectedQuiz.value, 
+                    question.description, 
+                    question.imageFile
+                );
+            for(const answer of question.answers) {
+                await postCreateAnswerForQuestion(
+                    answer.description, 
+                    answer.isCorrect, 
+                    q.DT.id
+                )
+            }
+        }
+
     }
 
     return (
