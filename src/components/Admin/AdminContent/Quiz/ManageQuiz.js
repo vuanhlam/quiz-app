@@ -6,6 +6,8 @@ import Accordion from 'react-bootstrap/Accordion';
 import './ManageQuiz.scss';
 import { postCreateNewQuiz } from '~/services/apiServices';
 import QuizTable from './QuizTable';
+import UpdateQuestions from './UpdateQuestions';
+import AssignQuiz from './AssignQuiz';
 
 function ManageQuiz() {
     const [name, setName] = useState('');
@@ -102,13 +104,26 @@ function ManageQuiz() {
                                 </div>
                             </fieldset>
                         </div>
+                        <h3 className="quiz-title">Quizes List</h3>
+                        <div className='list-detail'>
+                            <QuizTable />
+                        </div>
+                    </Accordion.Body>
+                </Accordion.Item>
+                <Accordion.Item eventKey="1">
+                    <Accordion.Header>Update Questions/Answers Quizzes</Accordion.Header>
+                    <Accordion.Body>
+                        <UpdateQuestions/>
+                    </Accordion.Body>
+                </Accordion.Item>
+                <Accordion.Item eventKey="2">
+                    <Accordion.Header>Assign To Users</Accordion.Header>
+                    <Accordion.Body>
+                        <AssignQuiz/>
                     </Accordion.Body>
                 </Accordion.Item>
             </Accordion>
-            <h3 className="quiz-title">Quizes List</h3>
-            <div className='list-detail'>
-                <QuizTable />
-            </div>
+           
         </div>
     );
 }
