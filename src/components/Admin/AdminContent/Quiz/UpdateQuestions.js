@@ -4,14 +4,14 @@ import { MdAddCircle } from 'react-icons/md';
 import { FaRegTimesCircle } from 'react-icons/fa';
 import { v4 as uuidv4 } from 'uuid';
 import _ from 'lodash';
-import Lightbox from "react-awesome-lightbox";
+import Lightbox from 'react-awesome-lightbox';
 import { toast } from 'react-toastify';
 
-
-import { getAllQuizForAdmin } from '~/services/apiServices';
-import { postCreateQuestionForQuiz, postCreateAnswerForQuestion } from '~/services/apiServices';
-
-
+import {
+    getAllQuizForAdmin,
+    getQuizWithQA,
+    postUpsertQuestion
+} from '~/services/apiServices';
 import './UpdateQuestions.scss';
 
 function UpdateQuestions() {
@@ -20,8 +20,8 @@ function UpdateQuestions() {
     const [listQuiz, setListQuiz] = useState([]);
     const [questionPreviewImage, setQuestionPreviewIamge] = useState({
         url: '',
-        title: ''
-    })
+        title: '',
+    });
     const initQuestion = [
         {
             id: uuidv4(),
@@ -36,12 +36,46 @@ function UpdateQuestions() {
                 },
             ],
         },
-    ]
+    ];
     const [questions, setQuestions] = useState(initQuestion);
 
     useEffect(() => {
         fetchQuiz();
     }, []);
+
+    useEffect(() => {
+        if (selectedQuiz && selectedQuiz.value) {
+            fetchQuizWithQA();
+        }
+    }, [selectedQuiz]);
+
+    function urltoFile(url, filename, mimeType) {
+        return fetch(url)
+            .then(function (res) {
+                return res.arrayBuffer();
+            })
+            .then(function (buf) {
+                return new File([buf], filename, { type: mimeType });
+            });
+    }
+
+    const fetchQuizWithQA = async () => {
+        let res = await getQuizWithQA(selectedQuiz.value);
+        if (res && res.EC === 0) {
+            // convert base 64 to File Object
+            let newQA = []
+            let questionLength = res.DT.qa.length;
+            for(let i = 0; i < questionLength; i++) {
+                let question = res.DT.qa[i];
+                if(question.imageFile) {
+                    question.imageName = `Question-${question.id}.png`
+                    question.imageFile = await urltoFile(`data:image/png;base64,${question.imageFile}`, `Question-${question.id}.png`, 'text/png')
+                }
+                newQA.push(question);
+            }
+            setQuestions(newQA);
+        }
+    };
 
     const fetchQuiz = async () => {
         let res = await getAllQuizForAdmin();
@@ -49,9 +83,9 @@ function UpdateQuestions() {
             let newQuiz = res.DT.map((item) => {
                 return {
                     value: item.id,
-                    label: `${item.id} - ${item.description}`
-                }
-            })
+                    label: `${item.id} - ${item.description}`,
+                };
+            });
             setListQuiz(newQuiz);
         }
     };
@@ -138,7 +172,7 @@ function UpdateQuestions() {
                     answer.isCorrect = e.target.checked;
                 }
                 if (type === 'INPUT') {
-                    answer.description = e.target.value;    
+                    answer.description = e.target.value;
                 }
                 setQuestions(cloneQuestions);
             }
@@ -148,76 +182,88 @@ function UpdateQuestions() {
     const hanldePreviewImage = (qId) => {
         const cloneQuestions = _.cloneDeep(questions);
         const question = cloneQuestions.find((item) => item.id === qId);
-        if(question) {
+        if (question) {
             setQuestionPreviewIamge({
                 url: URL.createObjectURL(question.imageFile),
-                title: question.imageName
-            })
-            setPreviewImage(true)
+                title: question.imageName,
+            });
+            setPreviewImage(true);
         }
-    }
+    };
+
+   
 
     const hanldeSubmitQuestionForQuiz = async () => {
-
-        // validate data  
-        if(_.isEmpty(selectedQuiz)) {
-            toast.error('Please choose a Quiz')
+        // validate data
+        if (_.isEmpty(selectedQuiz)) {
+            toast.error('Please choose a Quiz');
             return;
         }
 
         // validate answer
         let isValidAnswer = true;
-        let indexQ = 0, indexA = 0;
-        for(let i = 0; i <  questions.length; i++) {
-            for(let j = 0; j < questions[i].answers.length; j++) {
-                if(!questions[i].answers[j].description) {
+        let indexQ = 0,
+            indexA = 0;
+        for (let i = 0; i < questions.length; i++) {
+            for (let j = 0; j < questions[i].answers.length; j++) {
+                if (!questions[i].answers[j].description) {
                     isValidAnswer = false;
-                    indexA = j
+                    indexA = j;
                     break;
                 }
             }
             indexQ = i;
-            if(isValidAnswer === false) break;
+            if (isValidAnswer === false) break;
         }
-        
-        if(isValidAnswer === false) {
+
+        if (isValidAnswer === false) {
             toast.error(`Please enter answer ${indexA + 1} at question ${indexQ + 1}`);
             return;
         }
 
         // validate question
         let isValidQuestion = true;
-        let indexQuestion = 0
-        for(let i = 0; i <  questions.length; i++) {
-            if(!questions[i].description) {
+        let indexQuestion = 0;
+        for (let i = 0; i < questions.length; i++) {
+            if (!questions[i].description) {
                 isValidQuestion = false;
                 indexQuestion = i;
                 break;
             }
         }
-        
-        if(isValidQuestion === false) {
+
+        if (isValidQuestion === false) {
             toast.error(`Question's description ${indexQuestion + 1} can not leave empty`);
             return;
         }
 
-        for(const question of questions) {
-            const q = await postCreateQuestionForQuiz(
-                    selectedQuiz.value, 
-                    question.description, 
-                    question.imageFile
-                );
-            for(const answer of question.answers) {
-                await postCreateAnswerForQuestion(
-                    answer.description, 
-                    answer.isCorrect, 
-                    q.DT.id
-                )
+        let questionClone = _.cloneDeep(questions);
+        
+        for(let i = 0 ; i < questionClone.length; i++) {
+            if(questionClone[i].imageFile) {
+                questionClone[i].imageFile = await toBase64(questionClone[i].imageFile);
             }
         }
-        toast.success('Create Questions and Answer success');
-        setQuestions(initQuestion);
-    }
+
+
+        let res = await postUpsertQuestion({
+            quizId: selectedQuiz.value,
+            questions: questionClone
+        });
+
+        if(res && res.EC === 0) {
+            toast.success(res.EM)
+        }
+
+    };
+
+    const toBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+    
 
     return (
         <div className="question-wrapper">
@@ -257,18 +303,16 @@ function UpdateQuestions() {
                                                 onChange={(e) => hanldeOnChangeFileQuestion(question.id, e)}
                                             />
                                             <span>
-                                                {
-                                                    question.imageName 
-                                                    ? 
-                                                        <span
-                                                            style={{cursor: 'pointer'}}
-                                                            onClick={() => hanldePreviewImage(question.id)}
-                                                        >
-                                                            {question.imageName}
-                                                        </span> 
-                                                    : 
+                                                {question.imageName ? (
+                                                    <span
+                                                        style={{ cursor: 'pointer' }}
+                                                        onClick={() => hanldePreviewImage(question.id)}
+                                                    >
+                                                        {question.imageName}
+                                                    </span>
+                                                ) : (
                                                     '0 file is uploaded'
-                                                }
+                                                )}
                                             </span>
                                         </div>
                                         <div className="job">
@@ -289,8 +333,7 @@ function UpdateQuestions() {
                                         </div>
                                     </div>
                                 </div>
-                                {
-                                    question.answers &&
+                                {question.answers &&
                                     question.answers.length > 0 &&
                                     question.answers.map((answer, index) => {
                                         return (
@@ -334,32 +377,24 @@ function UpdateQuestions() {
                                                 </div>
                                             </div>
                                         );
-                                    })
-                                }
+                                    })}
                                 <hr />
                             </div>
                         );
-                    })
-                }
-                {
-                    isPreviewImage &&
-                    <Lightbox 
+                    })}
+                {isPreviewImage && (
+                    <Lightbox
                         image={questionPreviewImage.url}
-                        title={questionPreviewImage.title} 
+                        title={questionPreviewImage.title}
                         onClose={() => setPreviewImage(false)}
                     ></Lightbox>
-                }
-                {
-                    questions && questions.length > 0 &&
-                    <button 
-                        className='btn btn-warning'
-                        onClick={() => hanldeSubmitQuestionForQuiz()}
-                    >
-                        Save Questions
+                )}
+                {questions && questions.length > 0 && (
+                    <button className="btn btn-warning" onClick={() => hanldeSubmitQuestionForQuiz()}>
+                        Update
                     </button>
-                }
+                )}
             </div>
-            
         </div>
     );
 }
