@@ -1,6 +1,11 @@
 .Wrapper-List-Quiz {
     display: flex;
-    justify-content: space-evenly;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .card {
+        margin-bottom: 20px;
+    }
 
 
     .card-img-top {
