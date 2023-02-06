@@ -141,7 +141,8 @@ function DetailQuiz() {
                 <div className="line"></div>
                 <div className="question-content">
                     <Question 
-                        question={questionList && questionList.length > 0 ? questionList[index] : []} index={index} 
+                        question={questionList && questionList.length > 0 ? questionList[index] : []} 
+                        index={index} 
                         handleCheckBox={handleCheckBox}
                     />
                 </div>
@@ -161,7 +162,6 @@ function DetailQuiz() {
                 <center>
                     <QuestionList 
                         questionLength={questionList}
-                        index={index}
                         setIndex={setIndex}
                         handleSubmit={handleSubmit}
                     />

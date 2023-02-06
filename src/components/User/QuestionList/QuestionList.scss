@@ -44,9 +44,21 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            font-weight: 600;
+            color: #ccc;
 
             &:hover {
                 background-color: orange;
+                color: #fff;
+            }
+
+            &.selected {
+                color: green;
+            }
+
+            &.clicked {
+                background-color: orange;
+                color: white;
             }
         }
     }
