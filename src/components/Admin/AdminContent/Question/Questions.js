@@ -4,13 +4,11 @@ import { MdAddCircle } from 'react-icons/md';
 import { FaRegTimesCircle } from 'react-icons/fa';
 import { v4 as uuidv4 } from 'uuid';
 import _ from 'lodash';
-import Lightbox from "react-awesome-lightbox";
+import Lightbox from 'react-awesome-lightbox';
 import { toast } from 'react-toastify';
-
 
 import { getAllQuizForAdmin } from '~/services/apiServices';
 import { postCreateQuestionForQuiz, postCreateAnswerForQuestion } from '~/services/apiServices';
-
 
 import './Questions.scss';
 
@@ -20,8 +18,8 @@ function Questions() {
     const [listQuiz, setListQuiz] = useState([]);
     const [questionPreviewImage, setQuestionPreviewIamge] = useState({
         url: '',
-        title: ''
-    })
+        title: '',
+    });
     const initQuestion = [
         {
             id: uuidv4(),
@@ -36,8 +34,10 @@ function Questions() {
                 },
             ],
         },
-    ]
+    ];
     const [questions, setQuestions] = useState(initQuestion);
+
+    const [isValidAnswer, setIsValidAnswer] = useState(true);
 
     useEffect(() => {
         fetchQuiz();
@@ -49,9 +49,9 @@ function Questions() {
             let newQuiz = res.DT.map((item) => {
                 return {
                     value: item.id,
-                    label: `${item.id} - ${item.description}`
-                }
-            })
+                    label: `${item.id} - ${item.description}`,
+                };
+            });
             setListQuiz(newQuiz);
         }
     };
@@ -94,6 +94,7 @@ function Questions() {
                 question.answers.push(newAnswer);
             }
             setQuestions(questionClone);
+            setIsValidAnswer(true)
         }
 
         if (type === 'REMOVE') {
@@ -138,7 +139,7 @@ function Questions() {
                     answer.isCorrect = e.target.checked;
                 }
                 if (type === 'INPUT') {
-                    answer.description = e.target.value;    
+                    answer.description = e.target.value;
                 }
                 setQuestions(cloneQuestions);
             }
@@ -148,77 +149,82 @@ function Questions() {
     const hanldePreviewImage = (qId) => {
         const cloneQuestions = _.cloneDeep(questions);
         const question = cloneQuestions.find((item) => item.id === qId);
-        if(question) {
+        if (question) {
             setQuestionPreviewIamge({
                 url: URL.createObjectURL(question.imageFile),
-                title: question.imageName
-            })
-            setPreviewImage(true)
+                title: question.imageName,
+            });
+            setPreviewImage(true);
         }
-    }
+    };
 
     const hanldeSubmitQuestionForQuiz = async () => {
-
-        // validate data  
-        if(_.isEmpty(selectedQuiz)) {
-            toast.error('Please choose a Quiz')
+        // validate data
+        if (_.isEmpty(selectedQuiz)) {
+            toast.error('Please choose a Quiz');
             return;
         }
 
         // validate answer
         let isValidAnswer = true;
-        let indexQ = 0, indexA = 0;
-        for(let i = 0; i <  questions.length; i++) {
-            for(let j = 0; j < questions[i].answers.length; j++) {
-                if(!questions[i].answers[j].description) {
+        let indexQ = 0,
+            indexA = 0;
+        for (let i = 0; i < questions.length; i++) {
+            for (let j = 0; j < questions[i].answers.length; j++) {
+                if (!questions[i].answers[j].description) {
                     isValidAnswer = false;
-                    indexA = j
+                    indexA = j;
                     break;
                 }
             }
             indexQ = i;
-            if(isValidAnswer === false) break;
+            if (isValidAnswer === false) break;
         }
-        
-        if(isValidAnswer === false) {
+
+        if (isValidAnswer === false) {
             toast.error(`Please enter answer ${indexA + 1} at question ${indexQ + 1}`);
             return;
         }
 
         // validate question
         let isValidQuestion = true;
-        let indexQuestion = 0
-        for(let i = 0; i <  questions.length; i++) {
-            if(!questions[i].description) {
+        let indexQuestion = 0;
+        for (let i = 0; i < questions.length; i++) {
+            if (!questions[i].description) {
                 isValidQuestion = false;
                 indexQuestion = i;
                 break;
             }
         }
-        
-        if(isValidQuestion === false) {
+
+        if (isValidQuestion === false) {
             toast.error(`Question's description ${indexQuestion + 1} can not leave empty`);
             return;
         }
 
-        for(const question of questions) {
-            const q = await postCreateQuestionForQuiz(
-                    selectedQuiz.value, 
-                    question.description, 
-                    question.imageFile
-                );
-            for(const answer of question.answers) {
-                await postCreateAnswerForQuestion(
-                    answer.description, 
-                    answer.isCorrect, 
-                    q.DT.id
-                )
+        for (const question of questions) {
+            const q = await postCreateQuestionForQuiz(selectedQuiz.value, question.description, question.imageFile);
+            for (const answer of question.answers) {
+                await postCreateAnswerForQuestion(answer.description, answer.isCorrect, q.DT.id);
             }
         }
         toast.success('Create Questions and Answer success');
         setQuestions(initQuestion);
+    };
+
+    const clearError = (e) => {
+       if(e.target.value) {
+         setIsValidAnswer(true);
+       }
+    };
+
+    const handleOnBlurInput = (e) => {
+        if(!e.target.value) {
+            setIsValidAnswer(false);
+        }
     }
 
+    console.log(questions);
     return (
         <div className="question-wrapper">
             <h1 className="title">Manage Questions</h1>
@@ -257,18 +263,16 @@ function Questions() {
                                                 onChange={(e) => hanldeOnChangeFileQuestion(question.id, e)}
                                             />
                                             <span>
-                                                {
-                                                    question.imageName 
-                                                    ? 
-                                                        <span
-                                                            style={{cursor: 'pointer'}}
-                                                            onClick={() => hanldePreviewImage(question.id)}
-                                                        >
-                                                            {question.imageName}
-                                                        </span> 
-                                                    : 
+                                                {question.imageName ? (
+                                                    <span
+                                                        style={{ cursor: 'pointer' }}
+                                                        onClick={() => hanldePreviewImage(question.id)}
+                                                    >
+                                                        {question.imageName}
+                                                    </span>
+                                                ) : (
                                                     '0 file is uploaded'
-                                                }
+                                                )}
                                             </span>
                                         </div>
                                         <div className="job">
@@ -289,8 +293,7 @@ function Questions() {
                                         </div>
                                     </div>
                                 </div>
-                                {
-                                    question.answers &&
+                                {question.answers &&
                                     question.answers.length > 0 &&
                                     question.answers.map((answer, index) => {
                                         return (
@@ -306,11 +309,13 @@ function Questions() {
                                                 <div className="form-floating form-answer">
                                                     <input
                                                         type="text"
-                                                        className="form-control"
+                                                        className={`form-control ${isValidAnswer ? '' : 'is-invalid'}`}
                                                         value={answer.description}
                                                         onChange={(e) =>
                                                             handleAnswerQuestion('INPUT', question.id, answer.id, e)
                                                         }
+                                                        onInput={(e) => clearError(e)}
+                                                        onBlur={(e) => handleOnBlurInput(e)}
                                                     />
                                                     <label>Answer {index + 1}</label>
                                                 </div>
@@ -334,32 +339,24 @@ function Questions() {
                                                 </div>
                                             </div>
                                         );
-                                    })
-                                }
+                                    })}
                                 <hr />
                             </div>
                         );
-                    })
-                }
-                {
-                    isPreviewImage &&
-                    <Lightbox 
+                    })}
+                {isPreviewImage && (
+                    <Lightbox
                         image={questionPreviewImage.url}
-                        title={questionPreviewImage.title} 
+                        title={questionPreviewImage.title}
                         onClose={() => setPreviewImage(false)}
                     ></Lightbox>
-                }
-                {
-                    questions && questions.length > 0 &&
-                    <button 
-                        className='btn btn-warning'
-                        onClick={() => hanldeSubmitQuestionForQuiz()}
-                    >
+                )}
+                {questions && questions.length > 0 && (
+                    <button className="btn btn-warning" onClick={() => hanldeSubmitQuestionForQuiz()}>
                         Save Questions
                     </button>
-                }
+                )}
             </div>
-            
         </div>
     );
 }

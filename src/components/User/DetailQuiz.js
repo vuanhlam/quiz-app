@@ -6,6 +6,7 @@ import { getDataQuestion, postSubmitQuiz } from '~/services/apiServices';
 import './DetailQuiz.scss';
 import Question from './Question';
 import ModalResult from './ModalResult';
+import QuestionList from './QuestionList/QuestionList';
 
 function DetailQuiz() {
     const params = useParams();
@@ -158,7 +159,11 @@ function DetailQuiz() {
             </div>
             <div className="order-question-side">
                 <center>
-                    <h1>Count Down</h1>
+                    <QuestionList 
+                        questionLength={questionList}
+                        index={index}
+                        setIndex={setIndex}
+                    />
                 </center>
             </div>
             <ModalResult

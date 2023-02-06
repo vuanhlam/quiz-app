@@ -1,10 +1,10 @@
 import Select from 'react-select';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import Accordion from 'react-bootstrap/Accordion';
 
 import './ManageQuiz.scss';
-import { postCreateNewQuiz } from '~/services/apiServices';
+import { postCreateNewQuiz, getAllQuizForAdmin } from '~/services/apiServices';
 import QuizTable from './QuizTable';
 import UpdateQuestions from './UpdateQuestions';
 import AssignQuiz from './AssignQuiz';
@@ -14,6 +14,9 @@ function ManageQuiz() {
     const [description, setDescription] = useState('');
     const [type, setType] = useState(null);
     const [image, setImage] = useState(null);
+
+
+   
 
     const handleImage = (e) => {
         if (e.target && e.target.files && e.target.files[0]) {
@@ -90,7 +93,7 @@ function ManageQuiz() {
                                         defaultValue={type}
                                         onChange={setType}
                                         options={options}
-                                        placeholder={'Quiz type ..'}
+                                        placeholder={'Quiz type ..'} 
                                     />
                                 </div>
                                 <div className="more-action">
@@ -106,7 +109,7 @@ function ManageQuiz() {
                         </div>
                         <h3 className="quiz-title">Quizes List</h3>
                         <div className='list-detail'>
-                            <QuizTable />
+                            <QuizTable  />
                         </div>
                     </Accordion.Body>
                 </Accordion.Item>
@@ -123,7 +126,7 @@ function ManageQuiz() {
                     </Accordion.Body>
                 </Accordion.Item>
             </Accordion>
-           
+            
         </div>
     );
 }

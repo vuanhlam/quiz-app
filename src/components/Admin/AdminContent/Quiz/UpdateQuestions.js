@@ -49,7 +49,7 @@ function UpdateQuestions() {
         }
     }, [selectedQuiz]);
 
-    function urltoFile(url, filename, mimeType) {
+    function base64ToFile(url, filename, mimeType) {
         return fetch(url)
             .then(function (res) {
                 return res.arrayBuffer();
@@ -69,7 +69,7 @@ function UpdateQuestions() {
                 let question = res.DT.qa[i];
                 if(question.imageFile) {
                     question.imageName = `Question-${question.id}.png`
-                    question.imageFile = await urltoFile(`data:image/png;base64,${question.imageFile}`, `Question-${question.id}.png`, 'text/png')
+                    question.imageFile = await base64ToFile(`data:image/png;base64,${question.imageFile}`, `Question-${question.id}.png`, 'text/png')
                 }
                 newQA.push(question);
             }
@@ -245,6 +245,7 @@ function UpdateQuestions() {
             }
         }
 
+        console.log('questionClone: ', questionClone);
 
         let res = await postUpsertQuestion({
             quizId: selectedQuiz.value,
@@ -253,6 +254,7 @@ function UpdateQuestions() {
 
         if(res && res.EC === 0) {
             toast.success(res.EM)
+            fetchQuizWithQA();
         }
 
     };
@@ -265,6 +267,7 @@ function UpdateQuestions() {
     });
     
 
+    console.log('check question: ', questions)
     return (
         <div className="question-wrapper">
             <h1 className="title">Update Questions</h1>
