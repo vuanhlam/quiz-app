@@ -163,6 +163,7 @@ function DetailQuiz() {
                         questionLength={questionList}
                         index={index}
                         setIndex={setIndex}
+                        handleSubmit={handleSubmit}
                     />
                 </center>
             </div>

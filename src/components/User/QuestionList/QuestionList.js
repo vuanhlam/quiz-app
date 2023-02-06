@@ -1,9 +1,14 @@
 
+import CountDown from '../CountDown/CountDown';
 import './QuestionList.scss'
 
 function QuestionList(props) {
 
   const { questionLength, index , setIndex} = props;
+
+  const onTimeUp = () => {
+    props.handleSubmit();
+  }
 
   return (
     <div className="QuestionList-Wrapper">
@@ -12,7 +17,7 @@ function QuestionList(props) {
                 mark question
             </div>
             <div className='count-down-timer'>
-                10:10
+                <CountDown onTimeUp={onTimeUp}/>
             </div>
             <div className='do-again'>
                 do again
