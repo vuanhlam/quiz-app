@@ -54,6 +54,12 @@ function Login() {
         }
     };
 
+    const handleKeyDown = (e) => {
+        if(e && e.keyCode === 13) {
+            handleLogin();
+        }
+    }
+
     return (
         <div className="login-container">
             <div className="header">
@@ -87,6 +93,7 @@ function Login() {
                             placeholder="Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            onKeyDown={(e) => handleKeyDown(e)}
                         />
                     </div>
                     <span className="forgot-password">Forgot password ?</span>
