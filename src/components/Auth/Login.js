@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { ImSpinner10 } from 'react-icons/im'
+import Language from '../Header/Language';
 
 import './Login.scss';
 import { postLogin } from '~/services/apiServices';
 import { useDispatch } from 'react-redux';
 import { doLogin } from '~/redux/action/userActions';
+
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -71,6 +73,7 @@ function Login() {
                     Sign up
                 </button>
             </div>
+            <Language/>
             <div className="wrap-login">
                 <div className="title col-3 mx-auto">Quizlet</div>
                 <div className="welcome col-3 mx-auto">Hello, who’s this?</div>

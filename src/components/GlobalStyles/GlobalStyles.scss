@@ -124,3 +124,11 @@ body {
     background-color: var(--btn-warning);
 }
 
+
+.languages {
+    
+    .dropdown-toggle::after {
+        display: none!important;
+    }
+
+}
