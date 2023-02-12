@@ -10,6 +10,7 @@ import reportWebVitals from './reportWebVitals';
 import Layout from './Layout';
 import GlobalStyle from '~/components/GlobalStyles';
 import  { store, persistor }  from '~/redux/store';
+import i18n from './utils/i18n';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
