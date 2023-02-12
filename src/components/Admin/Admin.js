@@ -3,9 +3,12 @@ import { useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import { Outlet } from 'react-router-dom';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import { NavDropdown } from 'react-bootstrap';
+
 
 import SideBar from './SideBar';
 import './Admin.scss';
+import Language from '../Header/Language';
 
 function Admin() {
     const [collapsed, setCollapsed] = useState(false);
@@ -17,7 +20,17 @@ function Admin() {
             </div>
             <div className="admin-content">
                 <div className="amdin-header">
-                    <FaBars className="control-btn-sidebar" onClick={() => setCollapsed(!collapsed)} />
+                    <span>
+                        <FaBars className="control-btn-sidebar icon" onClick={() => setCollapsed(!collapsed)} />
+                    </span>
+                    <div className='options'>
+                        <Language/>
+                        <NavDropdown title="Settings" id="basic-nav-dropdown">
+                            <NavDropdown.Item>Profile</NavDropdown.Item>
+                            <NavDropdown.Divider />
+                            <NavDropdown.Item>Log Out</NavDropdown.Item>
+                        </NavDropdown>
+                    </div>
                 </div>
                 <div className="admin-main">
                     <PerfectScrollbar>

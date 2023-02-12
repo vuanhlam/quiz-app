@@ -6,7 +6,7 @@ import App from '~/App';
 // import User from './components/User/User';
 import Admin from './components/Admin/Admin';
 import Home from './components/Home/Home';
-import Dashboard from './components/Admin/AdminContent/Dashboard';
+import Dashboard from '~/components/Admin/AdminContent/Dashboard/Dashboard';
 import ManageUser from './components/Admin/AdminContent/ManageUser';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
